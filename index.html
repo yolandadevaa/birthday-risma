@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>The Royal Gala - Kharisma Nia</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Birthstone&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    
+    <script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary-blue": "#BAE6FD", 
+                        "primary-pink": "#FBCFE8", 
+                        "royal-blue": "#0369a1", 
+                        "rose-gold": "#E0B093",
+                        "surface": "#ffffff",
+                    },
+                    fontFamily: {
+                        "serif-elegant": ["'Playfair Display'", "serif"],
+                        "handwriting": ["'Caveat'", "cursive"],
+                        "sans-clean": ["'Plus Jakarta Sans'", "sans-serif"],
+                        "royal": ["'Birthstone'", "cursive"],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* KUNCI HALAMAN AGAR SOLID & TIDAK GOYANG */
+        html, body {
+            max-width: 100%;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent; 
+        }
+
+        body {
+            background-color: #ffffff;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(186, 230, 253, 0.3) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(251, 207, 232, 0.3) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: #1e293b;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- LOADING SCREEN DENGAN BG FOTO BLUR --- */
+        #cinematicScreen { 
+            transition: transform 1.2s cubic-bezier(0.85, 0, 0.15, 1); 
+            background-image: url('background-blur.jpeg');
+            background-size: cover;
+            background-position: center;
+        }
+        #cinematicScreen::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-color: rgba(255, 255, 255, 0.75); 
+            backdrop-filter: blur(15px); 
+            -webkit-backdrop-filter: blur(15px);
+            z-index: 0;
+        }
+
+        /* ANIMASI LIGHT SPOTLIGHT */
+        .pink-spotlight {
+            position: absolute;
+            top: -150px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(251, 207, 232, 0.6) 0%, transparent 70%);
+            filter: blur(50px);
+            z-index: 0;
+            animation: spotlight-sway 8s ease-in-out infinite;
+        }
+
+        @keyframes spotlight-sway {
+            0%, 100% { transform: translateX(-60%) rotate(-5deg); }
+            50% { transform: translateX(-40%) rotate(5deg); }
+        }
+
+        /* STARDUST PARTICLES */
+        .stardust {
+            position: fixed;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.6;
+            z-index: 1;
+            box-shadow: 0 0 5px rgba(186, 230, 253, 0.8);
+            animation: float-dust linear infinite;
+        }
+
+        @keyframes float-dust {
+            from { transform: translateY(100vh); opacity: 0; }
+            to { transform: translateY(-10vh); opacity: 0.8; }
+        }
+
+        /* ==================================================== */
+        /* 🔥 VARIASI TOMBOL ROYAL CRYSTAL (NO BASIC) 🔥         */
+        /* ==================================================== */
+        
+        /* Base Styling untuk Semua Teks & Icon Tombol */
+        .crystal-text {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 900;
+            font-size: 0.75rem; 
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #0369a1;
+            transition: color 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+        .crystal-icon-wrap {
+            display: flex; align-items: center; justify-content: center;
+            width: 36px; height: 36px; border-radius: 50%;
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 10px rgba(3, 105, 161, 0.1);
+            transition: all 0.4s ease;
+            position: relative; z-index: 2;
+        }
+        .crystal-icon-wrap .material-symbols-outlined { color: #0369a1; transition: all 0.3s ease; }
+        
+        /* Shimmer Effect Global */
+        @keyframes royal-shimmer {
+            0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; }
+        }
+
+        /* VARIANT 1: THE CLASSIC PILL */
+        .btn-crystal-pill {
+            position: relative; width: 100%; max-width: 350px; margin: 0 auto;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 1rem 1.5rem; border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 10px 30px -10px rgba(3, 105, 161, 0.15), inset 0 0 15px rgba(255,255,255,0.6);
+            cursor: pointer; overflow: hidden; transition: all 0.4s ease;
+        }
+        .btn-crystal-pill::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.9), transparent);
+            transform: skewX(-25deg); animation: royal-shimmer 4s infinite; z-index: 1;
+        }
+        .btn-crystal-pill:hover { transform: translateY(-3px); background: rgba(255, 255, 255, 0.7); box-shadow: 0 15px 35px -10px rgba(224, 176, 147, 0.5), inset 0 0 25px rgba(255,255,255,0.9); }
+        .btn-crystal-pill:hover .crystal-text { color: #db2777; }
+        .btn-crystal-pill:hover .crystal-icon-wrap { background: #FBCFE8; transform: rotate(180deg); }
+        .btn-crystal-pill:hover .crystal-icon-wrap .material-symbols-outlined { color: #db2777; }
+
+        /* VARIANT 2: FLOATING ORB */
+        .btn-crystal-orb {
+            position: relative; width: 100%; max-width: 320px; margin: 0 auto;
+            display: flex; align-items: center; justify-content: center; gap: 1rem;
+            cursor: pointer; transition: all 0.4s ease;
+            background: transparent; border: none;
+        }
+        .orb-text-box {
+            background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.9); border-radius: 20px;
+            padding: 1rem 1.5rem; flex-grow: 1; text-align: left;
+            box-shadow: 0 8px 25px rgba(3, 105, 161, 0.1); transition: all 0.4s ease;
+        }
+        .orb-icon-box {
+            background: linear-gradient(135deg, #ffffff, #BAE6FD);
+            border: 1px solid white; border-radius: 50%;
+            width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 8px 20px rgba(3, 105, 161, 0.2); transition: all 0.4s ease;
+            position: relative; overflow: hidden;
+        }
+        .orb-icon-box::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.9), transparent);
+            transform: skewX(-25deg); animation: royal-shimmer 3s infinite;
+        }
+        .btn-crystal-orb:hover .orb-text-box { background: rgba(251, 207, 232, 0.4); transform: translateX(-5px); border-color: #FBCFE8; }
+        .btn-crystal-orb:hover .orb-icon-box { background: #db2777; transform: rotate(90deg) scale(1.1); }
+        .btn-crystal-orb:hover .crystal-text { color: #db2777; }
+        .btn-crystal-orb:hover .orb-icon-box .material-symbols-outlined { color: white; }
+
+        /* VARIANT 3: DIAMOND CUT */
+        .btn-crystal-diamond {
+            position: relative; width: 100%; max-width: 350px; margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+            border-top: 1px solid rgba(255, 255, 255, 0.9); border-bottom: 1px solid rgba(255, 255, 255, 0.9);
+            padding: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 1rem;
+            transition: all 0.5s ease;
+        }
+        .btn-crystal-diamond::before, .btn-crystal-diamond::after {
+            content: ''; position: absolute; top: 50%; transform: translateY(-50%);
+            width: 4px; height: 40%; background: #0369a1; transition: all 0.4s ease;
+        }
+        .btn-crystal-diamond::before { left: 0; } .btn-crystal-diamond::after { right: 0; }
+        .btn-crystal-diamond:hover { background: rgba(255, 255, 255, 0.8); letter-spacing: 2px; }
+        .btn-crystal-diamond:hover::before, .btn-crystal-diamond:hover::after { height: 100%; background: #db2777; }
+        .btn-crystal-diamond:hover .crystal-text { color: #db2777; }
+        .btn-crystal-diamond:hover .material-symbols-outlined { color: #db2777; transform: scale(1.2); }
+
+        /* SPECIAL PINK GLOW UNTUK GERBANG AKHIR */
+        .btn-pink-glow {
+            position: relative; width: 100%; max-width: 350px; margin: 0 auto;
+            display: flex; align-items: center; justify-content: center; gap: 1rem;
+            padding: 1.2rem; border-radius: 20px;
+            background: linear-gradient(45deg, rgba(251, 207, 232, 0.5), rgba(255, 255, 255, 0.8));
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border: 2px solid #FBCFE8; box-shadow: 0 0 20px rgba(219, 39, 119, 0.3);
+            cursor: pointer; overflow: hidden; transition: all 0.4s ease;
+        }
+        .btn-pink-glow::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.9), transparent);
+            transform: skewX(-25deg); animation: royal-shimmer 2s infinite; z-index: 1;
+        }
+        .btn-pink-glow:hover { box-shadow: 0 0 40px rgba(219, 39, 119, 0.6); transform: scale(1.03); border-color: #db2777; }
+        .btn-pink-glow .crystal-text { color: #db2777; font-size: 0.85rem; }
+        .btn-pink-glow .material-symbols-outlined { color: #db2777; }
+
+        /* GLASSMORPHISM GLOBAL */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 20px 40px -10px rgba(3, 105, 161, 0.1);
+        }
+
+        .masterpiece-frame {
+            padding: 12px;
+            background: white;
+            border: 1px solid rgba(186, 230, 253, 0.8);
+            box-shadow: 0 25px 50px -12px rgba(3, 105, 161, 0.15);
+            position: relative;
+        }
+
+        .content-transition {
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            visibility: hidden;
+            width: 100%;
+        }
+        .content-visible {
+            opacity: 1;
+            max-height: 4000px;
+            margin-top: 1rem;
+            visibility: visible;
+        }
+
+        .anti-blur {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            transform-style: preserve-3d;
+            outline: 1px solid transparent;
+        }
+
+        /* --- TREN BENTO GRID --- */
+        .bento-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; width: 100%; }
+        .bento-item { border-radius: 1.5rem; overflow: hidden; position: relative; transition: transform 0.3s ease; }
+        .bento-item:hover { transform: scale(1.02); }
+        .bento-large { grid-column: span 2; grid-row: span 2; min-height: 250px; }
+        .bento-medium { grid-column: span 2; min-height: 120px; }
+        .bento-small { grid-column: span 1; min-height: 120px; }
+
+        .home-film-container, .home-polaroid-container {
+            width: 100vw; max-width: 100%; overflow: hidden; position: relative; left: 50%; transform: translateX(-50%);
+        }
+        .home-film-strip { width: 100%; background: #111; padding: 20px 0; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .home-film-strip::before, .home-film-strip::after {
+            content: ''; position: absolute; left: 0; right: 0; height: 10px;
+            background-image: radial-gradient(white 40%, transparent 50%); background-size: 20px 20px; background-position: center; z-index: 10;
+        }
+        .home-film-strip::before { top: 4px; }
+        .home-film-strip::after { bottom: 4px; }
+        .home-film-track { display: flex; gap: 10px; width: max-content; animation: scroll-left 25s linear infinite; }
+        .home-film-track:hover, .home-polaroid-track:hover { animation-play-state: paused; }
+        .home-film-frame {
+            background: white; padding: 3px; border-radius: 2px; width: 160px; height: 110px;
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); cursor: pointer;
+        }
+        .home-film-frame:hover { transform: scale(1.15) translateY(-5px); box-shadow: 0 15px 25px rgba(0,0,0,0.5); z-index: 20; position: relative; }
+        .home-film-frame img { width: 100%; height: 100%; object-fit: cover; filter: sepia(30%) contrast(1.1); }
+        .home-polaroid-desk { position: relative; width: 100%; height: 280px; overflow: hidden; background: rgba(255,255,255,0.2); border-top: 1px solid rgba(255,255,255,0.5); border-bottom: 1px solid rgba(255,255,255,0.5); }
+        .home-polaroid-track { display: flex; width: max-content; animation: scroll-left-slow 40s linear infinite; padding: 30px 10px; align-items: center; }
+        .home-polaroid {
+            background: white; padding: 8px 8px 25px; box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            width: 140px; transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1); cursor: pointer; margin-right: -25px;
+        }
+        .home-polaroid:hover { transform: scale(1.2) rotate(0deg) translateY(-20px) !important; z-index: 50; box-shadow: 0 25px 40px rgba(0,0,0,0.3); }
+        .home-polaroid img { width: 100%; height: 130px; object-fit: cover; border: 1px solid #eee; }
+        @media (min-width: 768px) {
+            .home-film-frame { width: 220px; height: 150px; padding: 4px; }
+            .home-polaroid-desk { height: 350px; }
+            .home-polaroid { width: 180px; padding: 10px 10px 30px; margin-right: -40px; }
+            .home-polaroid img { height: 160px; }
+        }
+
+        /* --- TREN SCROLL REVEAL --- */
+        .reveal-text {
+            opacity: 0; transform: translateY(40px) scale(0.95); transition: all 1.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+            background: linear-gradient(to right, #0369a1, #E0B093, #db2777); -webkit-background-clip: text; color: transparent;
+        }
+        .reveal-text.active { opacity: 1; transform: translateY(0) scale(1); }
+
+        /* --- TREN FLOATING CARDS --- */
+        .perspective-container { perspective: 1000px; }
+        .floating-card { transform-style: preserve-3d; transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); animation: float-obj 6s ease-in-out infinite; }
+        .floating-card:hover { transform: rotateY(180deg) scale(1.1); }
+        .card-face { backface-visibility: hidden; -webkit-backface-visibility: hidden; position: absolute; inset: 0; border-radius: 1rem; }
+        .card-back { transform: rotateY(180deg); background: linear-gradient(135deg, #0369a1, #BAE6FD); display: flex; align-items: center; justify-content: center; padding: 1rem; text-align: center; }
+        @keyframes float-obj { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+
+        /* --- NEW: HALL OF FAME (PODIUM) --- */
+        .glass-trophy { background: linear-gradient(180deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.2) 100%); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.9); box-shadow: 0 -10px 30px rgba(186, 230, 253, 0.5), inset 0 2px 10px white; border-radius: 8px 8px 0 0; position: relative; transition: all 0.3s; }
+        .glass-trophy:hover { filter: brightness(1.1); transform: translateY(-5px); }
+
+        /* --- NEW: GOLDEN TICKET --- */
+        .golden-ticket { background: linear-gradient(135deg, #D4AF37 0%, #FFF8DC 20%, #D4AF37 50%, #B8860B 100%); border: 2px solid #FFF8DC; box-shadow: 0 15px 35px rgba(212, 175, 55, 0.4); position: relative; overflow: hidden; }
+        .golden-ticket::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(to right, transparent, rgba(255,255,255,0.8), transparent); transform: rotate(45deg); animation: shimmer 3s infinite linear; }
+        .barcode { font-family: 'Libre Barcode 39', cursive; letter-spacing: 2px; }
+
+        /* --- NEW: ROYAL GUESTBOOK (MARQUEE) --- */
+        .marquee-wrapper { overflow: hidden; white-space: nowrap; width: 100%; position: relative; }
+        .marquee-track { display: inline-flex; gap: 1rem; animation: scroll-left 25s linear infinite; }
+        @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        @keyframes scroll-left-slow { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        /* --- NEW: SYMPHONY OF SISTERHOOD --- */
+        .vinyl-record { border-radius: 50%; background: radial-gradient(circle, #111 40%, #222 42%, #111 45%, #333 50%, #111 80%, #222 90%, #111 100%); box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 10px rgba(255,255,255,0.2); animation: spin-record 4s linear infinite; }
+        @keyframes spin-record { 100% { transform: rotate(360deg); } }
+        .sound-wave-bar { width: 6px; border-radius: 10px; background: #E0B093; animation: bounce-wave 1s ease-in-out infinite alternate; }
+        @keyframes bounce-wave { 0% { height: 10px; } 100% { height: 50px; } }
+
+        /* --- TREN CONSTELLATION OF WISHES (EXIT TRANSITION) --- */
+        .constellation-bg { background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%); position: relative; overflow: hidden; transition: all 1s ease; }
+        .glowing-star { width: 80px; height: 80px; background: radial-gradient(circle, #FBCFE8 0%, rgba(251,207,232,0) 70%); border-radius: 50%; cursor: pointer; box-shadow: 0 0 30px #FBCFE8, 0 0 60px #E0B093; animation: pulse-star 2s infinite; transition: all 0.5s ease; }
+        @keyframes pulse-star { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.2); opacity: 1; } }
+        .star-burst { transform: scale(20); opacity: 0; }
+        #pageExitOverlay { position: fixed; inset: 0; background-color: #ffffff; z-index: 999999; opacity: 0; pointer-events: none; transition: opacity 1s ease-in-out; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center font-sans-clean overflow-x-hidden w-full relative">
+
+    <div class="pink-spotlight"></div>
+    <div id="stardustContainer"></div>
+    <div id="pageExitOverlay"></div>
+
+    <div id="cinematicScreen" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center transform border-b-4 border-primary-blue cursor-pointer">
+        <div class="relative z-10 flex flex-col items-center text-center px-6 w-full">
+            <span class="material-symbols-outlined text-rose-gold text-6xl animate-pulse mb-6">award_star</span>
+            <h2 class="font-serif-elegant text-3xl md:text-4xl text-navy-text font-bold tracking-[0.2em] uppercase drop-shadow-sm">
+                The Royal Gala
+            </h2>
+            <p id="loadingSubText" class="font-handwriting text-2xl text-pink-500 mt-2 transition-opacity duration-300">Menyiapkan karpet merah untuk Sang Ratu...</p>
+            
+            <button id="btnOpenCurtain" class="btn-crystal-pill mt-10 animate-bounce">
+                <span class="crystal-text w-full text-center">Ketuk Untuk Masuk ✨</span>
+            </button>
+        </div>
+    </div>
+
+    <nav class="w-full sticky top-0 z-50 bg-white/60 backdrop-blur-md border-b border-rose-gold/20 shadow-sm">
+        <div class="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
+            <span class="text-3xl font-royal text-royal-blue drop-shadow-sm">Kharisma Nia.</span>
+            <div class="flex gap-6">
+                <span class="material-symbols-outlined text-rose-gold animate-pulse">auto_awesome</span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="w-full max-w-2xl mx-auto px-6 flex flex-col items-center pt-16 pb-20 z-10 relative">
+        
+        <header class="text-center w-full flex flex-col items-center gap-4 relative mb-10">
+            <p class="font-sans-clean text-[10px] md:text-xs text-royal-blue tracking-[0.4em] font-black uppercase opacity-70">Menyambut Sang Lulusan Terbaik Skariga</p>
+            <h1 class="font-serif-elegant text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-br from-royal-blue via-rose-gold to-pink-400 leading-tight mt-2 uppercase tracking-tighter drop-shadow-sm">
+                KHARISMA NIA<br/>RIMADHANI
+            </h1>
+            <h2 class="font-royal text-5xl md:text-6xl text-rose-gold -mt-4">The 18th Edition</h2>
+        </header>
+
+        <div id="sectionMasterpiece" class="flex flex-col items-center w-full">
+            <section class="w-full flex flex-col items-center mt-6 mb-8">
+                <div class="masterpiece-frame w-full max-w-[320px] transform hover:rotate-0 transition-transform duration-500 -rotate-2 anti-blur">
+                    <img alt="Foto Kharisma" class="w-full h-[400px] object-cover" src="foto-index-1.jpeg"/>
+                    <div class="mt-4 text-center">
+                        <p class="font-serif-elegant italic text-sm text-royal-blue">"The Masterpiece of Resilience"</p>
+                    </div>
+                </div>
+            </section>
+            <div id="homeFilmStrip" class="home-film-container mb-8 anti-blur">
+                <h3 class="font-sans-clean text-[10px] md:text-xs font-black text-royal-blue tracking-[0.3em] uppercase text-center mb-4">Archive Reel</h3>
+                <div class="home-film-strip">
+                    <div class="home-film-track">
+                        <div class="home-film-frame"><img src="risma-1.jpeg"></div>
+                        <div class="home-film-frame"><img src="risma-2.jpeg" class="grayscale"></div>
+                        <div class="home-film-frame"><img src="risma-3.jpeg" style="filter: hue-rotate(90deg);"></div>
+                        <div class="home-film-frame"><img src="risma-4.jpeg"></div>
+                        <div class="home-film-frame"><img src="risma-5.jpeg"></div>
+                        <div class="home-film-frame"><img src="risma-6.jpeg" class="grayscale"></div>
+                        <div class="home-film-frame"><img src="risma-7.jpeg" style="filter: hue-rotate(90deg);"></div>
+                        <div class="home-film-frame"><img src="risma-8.jpeg"></div>
+                        <div class="home-film-frame" aria-hidden="true"><img src="risma-1.jpeg"></div>
+                        <div class="home-film-frame" aria-hidden="true"><img src="risma-2.jpeg" class="grayscale"></div>
+                        <div class="home-film-frame" aria-hidden="true"><img src="risma-3.jpeg" style="filter: hue-rotate(90deg);"></div>
+                        <div class="home-film-frame" aria-hidden="true"><img src="risma-4.jpeg"></div>
+                        <div class="home-film-frame" aria-hidden="true"><img src="risma-5.jpeg"></div>
+                        <div class="home-film-frame" aria-hidden="true"><img src="risma-6.jpeg" class="grayscale"></div>
+                        <div class="home-film-frame" aria-hidden="true"><img src="risma-7.jpeg" style="filter: hue-rotate(90deg);"></div>
+                        <div class="home-film-frame" aria-hidden="true"><img src="risma-8.jpeg"></div>
+                    </div>
+                </div>
+                <p class="text-center text-[8px] md:text-[9px] text-slate-400 font-bold uppercase tracking-widest mt-3 animate-pulse">Sentuh rol film untuk melihat lebih jelas</p>
+            </div>
+            <div id="homePolaroidStrip" class="home-polaroid-container mb-8 anti-blur">
+                <h3 class="font-sans-clean text-[10px] md:text-xs font-black text-royal-blue tracking-[0.3em] uppercase text-center mb-4">Polaroid Memories</h3>
+                <div class="home-polaroid-desk">
+                    <div class="home-polaroid-track">
+                        <div class="home-polaroid" style="transform: rotate(5deg);"><img src="lulus.jpeg"><p class="font-handwriting text-base md:text-lg text-center mt-2 md:mt-3 text-royal-blue">Lulus juga akhirnya! 🎉</p></div>
+                        <div class="home-polaroid" style="transform: rotate(-10deg); margin-top: 30px;"><img src="cemberut.jpeg" class="grayscale"><p class="font-handwriting text-base md:text-lg text-center mt-2 md:mt-3 text-royal-blue">Cemberut minta cium 🙄</p></div>
+                        <div class="home-polaroid" style="transform: rotate(15deg); margin-top: -20px;"><img src="mode-kalem.jpeg" class="sepia"><p class="font-handwriting text-base md:text-lg text-center mt-2 md:mt-3 text-royal-blue">Mode kalem (jarang)</p></div>
+                        <div class="home-polaroid" style="transform: rotate(-5deg); margin-top: 10px;"><img src="skariga.jpeg"><p class="font-handwriting text-base md:text-lg text-center mt-2 md:mt-3 text-royal-blue">Skariga '26 bos 🔥</p></div>
+                        <div class="home-polaroid" style="transform: rotate(5deg);"><img src="kepang-dua.jpeg"><p class="font-handwriting text-base md:text-lg text-center mt-2 md:mt-3 text-royal-blue">Kepang dua comel</p></div>
+                        <div class="home-polaroid" style="transform: rotate(-10deg); margin-top: 30px;"><img src="baloga.jpeg" class="grayscale"><p class="font-handwriting text-base md:text-lg text-center mt-2 md:mt-3 text-royal-blue">Baloga pride🙄</p></div>
+                        <div class="home-polaroid" style="transform: rotate(15deg); margin-top: -20px;"><img src="model-korea.jpeg" class="sepia"><p class="font-handwriting text-base md:text-lg text-center mt-2 md:mt-3 text-royal-blue">Ala-ala model korea</p></div>
+                        <div class="home-polaroid" style="transform: rotate(-5deg); margin-top: 10px;"><img src="senyum.jpeg"><p class="font-handwriting text-base md:text-lg text-center mt-2 md:mt-3 text-royal-blue">ADUH SENYUMNYA ITULO🔥</p></div>
+                        <div class="home-polaroid" aria-hidden="true" style="transform: rotate(5deg);"><img src="lulus.jpeg"><p class="font-handwriting text-base md:text-lg text-center mt-2 md:mt-3 text-royal-blue">Lulus juga akhirnya! 🎉</p></div>
+                        <div class="home-polaroid" aria-hidden="true" style="transform: rotate(-10deg); margin-top: 30px;"><img src="cemberut.jpeg" class="grayscale"><p class="font-handwriting text-base md:text-lg text-center mt-2 md:mt-3 text-royal-blue">Cemberut minta cium 🙄</p></div>
+                        <div class="home-polaroid" aria-hidden="true" style="transform: rotate(15deg); margin-top: -20px;"><img src="mode-kalem.jpeg" class="sepia"><p class="font-handwriting text-base md:text-lg text-center mt-2 md:mt-3 text-royal-blue">Mode kalem (jarang)</p></div>
+                        <div class="home-polaroid" aria-hidden="true" style="transform: rotate(-5deg); margin-top: 10px;"><img src="skariga.jpeg"><p class="font-handwriting text-base md:text-lg text-center mt-2 md:mt-3 text-royal-blue">Skariga '26 bos 🔥</p></div>
+                        <div class="home-polaroid" aria-hidden="true" style="transform: rotate(5deg);"><img src="kepang-dua.jpeg"><p class="font-handwriting text-base md:text-lg text-center mt-2 md:mt-3 text-royal-blue">Kepang dua comel</p></div>
+                        <div class="home-polaroid" aria-hidden="true" style="transform: rotate(-10deg); margin-top: 30px;"><img src="baloga.jpeg" class="grayscale"><p class="font-handwriting text-base md:text-lg text-center mt-2 md:mt-3 text-royal-blue">Baloga pride🙄</p></div>
+                        <div class="home-polaroid" aria-hidden="true" style="transform: rotate(15deg); margin-top: -20px;"><img src="model-korea.jpeg" class="sepia"><p class="font-handwriting text-base md:text-lg text-center mt-2 md:mt-3 text-royal-blue">Ala-ala model korea</p></div>
+                        <div class="home-polaroid" aria-hidden="true" style="transform: rotate(-5deg); margin-top: 10px;"><img src="senyum.jpeg"><p class="font-handwriting text-base md:text-lg text-center mt-2 md:mt-3 text-royal-blue">ADUH SENYUMNYA ITULO🔥</p></div>
+                    </div>
+                </div>
+                <p class="text-center text-[8px] md:text-[9px] text-slate-400 font-bold uppercase tracking-widest mt-3 animate-pulse">Sentuh foto untuk melihat lebih jelas</p>
+            </div>
+        </div>
+
+        <button id="btnTogglePrasasti" class="btn-crystal-orb mt-6 mb-4">
+            <div class="orb-text-box">
+                <span id="textPrasasti" class="crystal-text">Buka Prasasti Gelar</span> 
+            </div>
+            <div class="orb-icon-box">
+                <span id="iconPrasasti" class="material-symbols-outlined text-royal-blue">expand_more</span>
+            </div>
+        </button>
+
+        <div id="sectionPrasasti" class="content-transition flex flex-col items-center w-full">
+            <div class="glass-panel rounded-3xl p-8 md:p-10 w-full mt-6 mb-8 relative overflow-hidden anti-blur">
+                <div class="text-center mb-8">
+                    <h3 class="font-serif-elegant text-2xl md:text-3xl text-royal-blue font-bold tracking-wide">Prasasti VIP</h3>
+                    <div class="w-16 h-1 bg-gradient-to-r from-primary-blue to-primary-pink mx-auto mt-2 rounded-full"></div>
+                </div>
+                <div class="space-y-6 relative z-10">
+                    <div class="bg-white/50 p-4 rounded-xl border border-white text-center">
+                        <h4 class="font-sans-clean font-black text-[10px] text-rose-gold uppercase tracking-[0.2em] mb-2">Gelar Resmi</h4>
+                        <p class="font-serif-elegant text-lg text-royal-blue font-bold">Kakak Tangguh, ATM Berjalan Yola, & Ratu Kesetiaan.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button id="btnToggleBento" class="btn-crystal-diamond mt-6 mb-4">
+            <span id="textBento" class="crystal-text">Buka Archive Bento</span> 
+            <span id="iconBento" class="material-symbols-outlined text-royal-blue">expand_more</span>
+        </button>
+
+        <div id="sectionBento" class="content-transition flex flex-col items-center w-full">
+            <div class="w-full mt-8 mb-8">
+                <h3 class="font-sans-clean text-xs font-black text-royal-blue tracking-[0.3em] uppercase text-center mb-6">Archive of Excellence</h3>
+                <div class="bento-grid">
+                    <div class="bento-item bento-large glass-panel p-2 flex items-center justify-center">
+                        <img src="foto-index-2.jpeg" class="w-full h-full object-cover rounded-2xl opacity-90" alt="Bento Pic" />
+                        <div class="absolute bottom-4 left-4 right-4 bg-white/80 backdrop-blur-md p-3 rounded-xl border border-white">
+                            <p class="font-sans-clean font-bold text-royal-blue text-xs uppercase text-center">Skariga '26</p>
+                        </div>
+                    </div>
+                    <div class="bento-item bento-medium glass-panel p-5 flex flex-col justify-center text-center">
+                        <span class="material-symbols-outlined text-rose-gold mb-2 mx-auto">format_quote</span>
+                        <p class="font-handwriting text-xl text-royal-blue leading-snug">"Kerja keras terbayar, rebahan pun kembali legal."</p>
+                    </div>
+                    <div class="bento-item bento-small bg-gradient-to-br from-primary-blue to-primary-pink p-4 flex flex-col justify-center items-center text-center border border-white shadow-sm">
+                        <span class="material-symbols-outlined text-white text-3xl mb-1">calendar_month</span>
+                        <p class="font-sans-clean font-black text-white text-[10px] tracking-widest uppercase">Lulus<br>2026</p>
+                    </div>
+                    <div class="bento-item bento-small glass-panel flex items-center justify-center">
+                        <span class="font-royal text-4xl text-royal-blue">#1</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="sectionHall" class="flex flex-col items-center w-full">
+            <div class="glass-panel rounded-3xl p-6 w-full mt-8 mb-8 relative overflow-hidden anti-blur">
+                <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-[200px] h-[100px] bg-primary-blue opacity-30 blur-[40px] rounded-full"></div>
+                <div class="text-center mb-10 relative z-10">
+                    <h3 class="font-serif-elegant text-2xl text-royal-blue font-bold tracking-wide">Skariga's Hall of Fame</h3>
+                    <p class="text-[10px] uppercase tracking-widest text-slate-500 mt-2">Piala Bergilir Khusus Sang Ratu</p>
+                </div>
+                
+                <div class="flex items-end justify-center gap-2 md:gap-4 h-[250px] relative z-10 px-2 text-center">
+                    <div class="glass-trophy h-32 w-1/3 flex flex-col items-center justify-end pb-3 px-1">
+                        <span class="material-symbols-outlined text-slate-400 text-3xl mb-1">emoji_events</span>
+                        <p class="font-bold text-royal-blue text-[10px] mb-2 uppercase">2nd</p>
+                        <p class="text-[9px] text-slate-700 leading-tight">Menahan Emosi<br>Terbaik</p>
+                    </div>
+                    <div class="glass-trophy h-48 w-1/3 flex flex-col items-center justify-end pb-3 px-1 shadow-[0_-15px_40px_rgba(251,207,232,0.8)]">
+                        <span class="material-symbols-outlined text-yellow-500 text-5xl mb-2">social_leaderboard</span>
+                        <p class="font-bold text-rose-gold text-xs mb-3 uppercase">1st</p>
+                        <p class="text-[10px] font-bold text-royal-blue leading-tight uppercase">Sponsor Jajan<br>Yola</p>
+                    </div>
+                    <div class="glass-trophy h-24 w-1/3 flex flex-col items-center justify-end pb-3 px-1">
+                        <span class="material-symbols-outlined text-orange-400 text-2xl mb-1">emoji_events</span>
+                        <p class="font-bold text-royal-blue text-[10px] mb-2 uppercase">3rd</p>
+                        <p class="text-[9px] text-slate-700 leading-tight">Miss Bad Mood<br>2026</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button id="btnToggleTicket" class="btn-crystal-orb mt-6 mb-4">
+            <div class="orb-text-box">
+                <span id="textTicket" class="crystal-text">Buka Golden Ticket</span> 
+            </div>
+            <div class="orb-icon-box">
+                <span id="iconTicket" class="material-symbols-outlined text-royal-blue">expand_more</span>
+            </div>
+        </button>
+
+        <div id="sectionTicket" class="content-transition flex flex-col items-center w-full">
+            <div class="w-full mt-8 mb-8 flex justify-center">
+                <div class="golden-ticket w-full max-w-[400px] rounded-2xl p-6 flex flex-col">
+                    <div class="flex justify-between items-center border-b border-yellow-600/30 pb-3 mb-4 relative z-10">
+                        <span class="font-sans-clean font-black text-xs tracking-widest text-yellow-900">FIRST CLASS</span>
+                        <span class="material-symbols-outlined text-yellow-700">flight_takeoff</span>
+                    </div>
+                    <div class="relative z-10 mb-6">
+                        <p class="text-[10px] text-yellow-800 tracking-widest uppercase mb-1">Passenger Name</p>
+                        <h3 class="font-serif-elegant text-2xl font-bold text-yellow-950 uppercase">Kharisma Nia</h3>
+                    </div>
+                    <div class="flex justify-between relative z-10 mb-6">
+                        <div>
+                            <p class="text-[9px] text-yellow-800 tracking-widest uppercase mb-1">From</p>
+                            <p class="font-bold text-yellow-950 text-sm">SMK ERA</p>
+                        </div>
+                        <div class="text-center px-4">
+                            <span class="material-symbols-outlined text-yellow-700">east</span>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[9px] text-yellow-800 tracking-widest uppercase mb-1">To</p>
+                            <p class="font-bold text-yellow-950 text-sm">INFO LOKER</p>
+                        </div>
+                    </div>
+                    <div class="border-t border-dashed border-yellow-700 pt-4 mt-auto relative z-10 text-center cursor-pointer group" onclick="throwConfetti()">
+                        <p class="text-[10px] text-yellow-800 font-bold uppercase tracking-widest mb-2 group-hover:text-pink-600 transition-colors">Ketuk Barcode Untuk Boarding!</p>
+                        <div class="flex justify-center gap-[2px] h-10 opacity-70">
+                            <div class="w-1 bg-yellow-950 h-full"></div><div class="w-2 bg-yellow-950 h-full"></div><div class="w-1 bg-yellow-950 h-full"></div><div class="w-3 bg-yellow-950 h-full"></div><div class="w-1 bg-yellow-950 h-full"></div><div class="w-2 bg-yellow-950 h-full"></div><div class="w-1 bg-yellow-950 h-full"></div><div class="w-4 bg-yellow-950 h-full"></div><div class="w-1 bg-yellow-950 h-full"></div><div class="w-2 bg-yellow-950 h-full"></div><div class="w-1 bg-yellow-950 h-full"></div><div class="w-3 bg-yellow-950 h-full"></div><div class="w-1 bg-yellow-950 h-full"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="sectionGuestbook" class="flex flex-col items-center w-full">
+            <div class="w-full mt-8 mb-8 overflow-hidden">
+                <h3 class="font-sans-clean text-xs font-black text-royal-blue tracking-[0.3em] uppercase text-center mb-6">The Royal Guestbook</h3>
+                <div class="marquee-wrapper py-4">
+                    <div class="marquee-track">
+                        <div class="glass-panel px-6 py-4 rounded-2xl min-w-[280px]">
+                            <p class="font-handwriting text-lg text-royal-blue">"Semoga sukses terus Kak Risma! Aku padamu 💕"</p>
+                            <p class="text-right text-[10px] font-bold text-slate-500 mt-2">- Yola Mode Puitis</p>
+                        </div>
+                        <div class="glass-panel px-6 py-4 rounded-2xl min-w-[280px]">
+                            <p class="font-handwriting text-lg text-pink-600">"Lulus = Langsung dapet kerja = Traktir Yola makan enak tiap hari 🍗"</p>
+                            <p class="text-right text-[10px] font-bold text-slate-500 mt-2">- Yola Mode Laper</p>
+                        </div>
+                        <div class="glass-panel px-6 py-4 rounded-2xl min-w-[280px]">
+                            <p class="font-handwriting text-lg text-royal-blue">"Kurang-kurangin ngamuknya ya Ratu, singanya disimpen dulu 🦁"</p>
+                            <p class="text-right text-[10px] font-bold text-slate-500 mt-2">- Yola Mode Cari Ribut</p>
+                        </div>
+                        
+                        <div class="glass-panel px-6 py-4 rounded-2xl min-w-[280px]">
+                            <p class="font-handwriting text-lg text-royal-blue">"Semoga sukses terus Kak Risma! Aku padamu 💕"</p>
+                            <p class="text-right text-[10px] font-bold text-slate-500 mt-2">- Yola Mode Puitis</p>
+                        </div>
+                        <div class="glass-panel px-6 py-4 rounded-2xl min-w-[280px]">
+                            <p class="font-handwriting text-lg text-pink-600">"Lulus = Langsung dapet kerja = Traktir Yola makan enak tiap hari 🍗"</p>
+                            <p class="text-right text-[10px] font-bold text-slate-500 mt-2">- Yola Mode Laper</p>
+                        </div>
+                        <div class="glass-panel px-6 py-4 rounded-2xl min-w-[280px]">
+                            <p class="font-handwriting text-lg text-royal-blue">"Kurang-kurangin ngamuknya ya Ratu, singanya disimpen dulu 🦁"</p>
+                            <p class="text-right text-[10px] font-bold text-slate-500 mt-2">- Yola Mode Cari Ribut</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button id="btnToggleCards" class="btn-crystal-pill mt-6 mb-4">
+            <span id="textCards" class="crystal-text">Buka Memori Melayang</span> 
+            <div class="crystal-icon-wrap">
+                <span id="iconCards" class="material-symbols-outlined">expand_more</span>
+            </div>
+        </button>
+
+        <div id="sectionCards" class="content-transition flex flex-col items-center w-full">
+            <div class="w-full mt-10 mb-8">
+                <div class="flex flex-wrap justify-center gap-6 perspective-container">
+                    <div class="floating-card w-[140px] h-[200px] md:w-[160px] md:h-[230px] relative cursor-pointer" style="animation-delay: 0s;">
+                        <div class="card-face bg-white p-2 border border-primary-blue shadow-lg">
+                            <div class="w-full h-full bg-slate-200 rounded-lg overflow-hidden relative">
+                                <img src="foto-index-4.jpeg" class="w-full h-full object-cover" />
+                            </div>
+                        </div>
+                        <div class="card-face card-back rounded-xl border-2 border-white shadow-xl">
+                            <p class="font-handwriting text-white text-xl">Sabar ya kak menghadapi dunia 🤍</p>
+                        </div>
+                    </div>
+                    <div class="floating-card w-[140px] h-[200px] md:w-[160px] md:h-[230px] relative cursor-pointer" style="animation-delay: -3s;">
+                        <div class="card-face bg-white p-2 border border-primary-pink shadow-lg">
+                            <div class="w-full h-full bg-slate-200 rounded-lg overflow-hidden relative">
+                                <img src="foto-index-3.jpeg" class="w-full h-full object-cover grayscale" />
+                            </div>
+                        </div>
+                        <div class="card-face card-back rounded-xl border-2 border-white shadow-xl">
+                            <p class="font-handwriting text-white text-xl">Jangan lupa traktir Yola! 💸</p>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-[10px] text-center text-slate-400 font-bold uppercase tracking-widest mt-8 animate-pulse">Sentuh kartunya untuk melihat pesan</p>
+            </div>
+        </div>
+
+        <div id="sectionSymphony" class="flex flex-col items-center w-full">
+            <div class="glass-panel rounded-full px-8 py-6 flex items-center justify-center gap-6 mt-8 mb-8">
+                <div class="flex gap-1 items-center h-12">
+                    <div class="sound-wave-bar" style="animation-delay: 0.1s"></div>
+                    <div class="sound-wave-bar" style="animation-delay: 0.5s"></div>
+                    <div class="sound-wave-bar" style="animation-delay: 0.3s"></div>
+                    <div class="sound-wave-bar" style="animation-delay: 0.8s"></div>
+                </div>
+                
+                <div class="vinyl-record w-20 h-20 md:w-24 md:h-24 flex items-center justify-center relative">
+                    <div class="w-8 h-8 rounded-full bg-white overflow-hidden border-2 border-slate-300">
+                        <img src="foto-kakak.jpeg" class="w-full h-full object-cover" alt="Vinyl Core">
+                    </div>
+                    <div class="absolute -top-2 -right-4 w-10 h-1 bg-slate-300 rotate-45 rounded-full shadow-md z-10 origin-top-right"></div>
+                </div>
+
+                <div class="flex gap-1 items-center h-12">
+                    <div class="sound-wave-bar" style="animation-delay: 0.4s"></div>
+                    <div class="sound-wave-bar" style="animation-delay: 0.2s"></div>
+                    <div class="sound-wave-bar" style="animation-delay: 0.7s"></div>
+                    <div class="sound-wave-bar" style="animation-delay: 0.1s"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-full py-24 flex justify-center items-center text-center relative overflow-hidden">
+            <h2 class="reveal-text font-serif-elegant text-3xl md:text-5xl font-black leading-tight z-10 px-4">
+                "Di balik setiap tawa yang nyaring,<br>ada perjuangan yang hening."<br>
+                <span class="text-xl md:text-2xl font-handwriting text-rose-gold mt-4 block">Kamu hebat, Kak.</span>
+            </h2>
+        </div>
+
+        <button id="btnToggleConstellation" class="btn-pink-glow mt-6 mb-4">
+            <span id="textConstellation" class="crystal-text text-center w-full">Buka Gerbang Akhir ✨</span> 
+            <span id="iconConstellation" class="material-symbols-outlined text-white animate-pulse">exit_to_app</span>
+        </button>
+
+        <div id="sectionConstellation" class="content-transition flex flex-col items-center w-full">
+            <div class="w-full mt-8 mb-10">
+                <div id="constellationBox" class="constellation-bg w-full h-[400px] rounded-[3rem] border border-slate-700 shadow-2xl flex flex-col items-center justify-center relative anti-blur">
+                    <div class="absolute inset-0 opacity-40 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMSIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==')]"></div>
+                    
+                    <h3 id="constellationTitle" class="font-sans-clean text-xs font-bold tracking-[0.4em] uppercase text-primary-pink mb-8 relative z-10 transition-opacity duration-500">Sentuh Bintang Utamanya</h3>
+                    
+                    <div id="magicStar" class="glowing-star relative z-20 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-white text-3xl">auto_awesome</span>
+                    </div>
+
+                    <div id="wishText" class="absolute inset-0 flex flex-col items-center justify-center p-8 opacity-0 pointer-events-none transition-opacity duration-1000 z-30">
+                        <p class="font-serif-elegant text-2xl md:text-3xl text-white text-center leading-relaxed">
+                            "Semoga perjalananmu ke depan seterang bintang ini. Terbang yang tinggi, Ratu!"
+                        </p>
+                        <p class="font-sans-clean text-[10px] text-primary-blue uppercase tracking-widest mt-6 animate-pulse">Berpindah ke ruang memori...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="w-full bg-white/90 py-10 px-6 border-t border-rose-gold/20 text-center relative z-10 mt-auto">
+        <h3 class="font-royal text-5xl text-rose-gold drop-shadow-sm">Yola ❤️</h3>
+        <p class="text-[9px] font-bold tracking-[0.2em] uppercase text-royal-blue/60 mt-2">© 2026 • Exclusive for Kharisma Nia Rimadhani</p>
+    </footer>
+
+    <audio id="myAudio" src="lagu-kakak.mp3" loop preload="auto"></audio>
+
+    <script>
+        // --- 1. SCRIPT STARDUST ---
+        const container = document.getElementById('stardustContainer');
+        for (let i = 0; i < 30; i++) {
+            const star = document.createElement('div');
+            star.className = 'stardust';
+            const size = Math.random() * 4 + 2 + 'px';
+            star.style.width = size;
+            star.style.height = size;
+            star.style.left = Math.random() * 100 + '%';
+            star.style.animationDuration = Math.random() * 3 + 3 + 's';
+            star.style.animationDelay = Math.random() * 5 + 's';
+            container.appendChild(star);
+        }
+
+        // --- 2. SCRIPT AUDIO TAHAN BANTING ---
+        const cinematicScreen = document.getElementById('cinematicScreen');
+        const btnOpenCurtain = document.getElementById('btnOpenCurtain');
+        const subText = document.getElementById('loadingSubText');
+        const myAudio = document.getElementById('myAudio');
+        
+        const savedTime = localStorage.getItem('bgmTime') || 0;
+        myAudio.currentTime = parseFloat(savedTime);
+        let audioStarted = false;
+        let curtainOpened = false;
+
+        function forcePlayAudio() {
+            return myAudio.play().then(() => {
+                audioStarted = true;
+                localStorage.setItem('bgmState', 'playing');
+                return true;
+            }).catch(() => false);
+        }
+
+        function tryPlayAudioFromGesture() {
+            if (!audioStarted) {
+                forcePlayAudio();
+            }
+        }
+
+        document.addEventListener('pointerdown', tryPlayAudioFromGesture, {once: true});
+        document.addEventListener('keydown', tryPlayAudioFromGesture, {once: true});
+        forcePlayAudio();
+
+        btnOpenCurtain.addEventListener('click', () => {
+            if (curtainOpened) return;
+            curtainOpened = true;
+            forcePlayAudio();
+            btnOpenCurtain.classList.add('opacity-0');
+            subText.innerText = "Silakan masuk, Yang Mulia...";
+            setTimeout(() => {
+                cinematicScreen.style.transform = 'translateY(-100%)';
+                setTimeout(runAutoTour, 400);
+            }, 800);
+        });
+
+        setTimeout(() => btnOpenCurtain.click(), 600);
+
+        myAudio.addEventListener('timeupdate', () => {
+            localStorage.setItem('bgmTime', myAudio.currentTime);
+        });
+
+        // --- 3. FUNGSI UNTUK MENGATUR TOMBOL TOGGLE YANG TERSISA ---
+        function setupToggle(btnId, sectionId, textId, iconId, textOpen, textClose) {
+            const btn = document.getElementById(btnId);
+            const section = document.getElementById(sectionId);
+            const text = document.getElementById(textId);
+            const icon = document.getElementById(iconId);
+
+            if(!btn) return; 
+
+            btn.addEventListener('click', () => {
+                section.classList.toggle('content-visible');
+                if (section.classList.contains('content-visible')) {
+                    text.textContent = textClose;
+                    if(icon.classList.contains('animate-bounce')){
+                       icon.classList.remove('animate-bounce');
+                       icon.classList.add('rotate-180');
+                    }
+                } else {
+                    text.textContent = textOpen;
+                    if(icon.classList.contains('rotate-180')){
+                       icon.classList.remove('rotate-180');
+                    }
+                }
+            });
+        }
+
+        setupToggle('btnTogglePrasasti', 'sectionPrasasti', 'textPrasasti', 'iconPrasasti', 'Buka Prasasti Gelar', 'Tutup Prasasti Gelar');
+        setupToggle('btnToggleBento', 'sectionBento', 'textBento', 'iconBento', 'Buka Archive Bento', 'Tutup Archive Bento');
+        setupToggle('btnToggleTicket', 'sectionTicket', 'textTicket', 'iconTicket', 'Buka Golden Ticket', 'Tutup Golden Ticket');
+        setupToggle('btnToggleCards', 'sectionCards', 'textCards', 'iconCards', 'Buka Memori Melayang', 'Tutup Memori Melayang');
+        setupToggle('btnToggleConstellation', 'sectionConstellation', 'textConstellation', 'iconConstellation', 'Buka Gerbang Akhir ✨', 'Tutup Gerbang Akhir');
+
+        let autoTourStarted = false;
+        let autoTourActive = false;
+
+        function cancelAutoTour() {
+            autoTourActive = false;
+        }
+
+        function waitForTour(milliseconds) {
+            return new Promise(resolve => setTimeout(resolve, milliseconds));
+        }
+
+        function scrollToTourTarget(target) {
+            const nav = document.querySelector('nav');
+            const navHeight = nav ? nav.getBoundingClientRect().height : 0;
+            const targetTop = target.getBoundingClientRect().top + window.scrollY;
+            const targetHeight = target.getBoundingClientRect().height;
+            const destination = Math.max(0, targetTop - navHeight - (window.innerHeight - navHeight - targetHeight) / 2);
+            const start = window.scrollY;
+            const distance = destination - start;
+            const duration = Math.min(1800, Math.max(600, Math.abs(distance) * 0.45));
+
+            if (Math.abs(distance) < 2) return Promise.resolve(true);
+
+            window.scrollTo({top: destination, behavior: 'smooth'});
+            return waitForTour(duration).then(() => autoTourActive);
+        }
+
+        async function runAutoTour() {
+            if (autoTourStarted) return;
+            autoTourStarted = true;
+            autoTourActive = true;
+            window.addEventListener('pointerdown', cancelAutoTour, {once: true});
+            window.addEventListener('keydown', cancelAutoTour, {once: true});
+            window.addEventListener('wheel', cancelAutoTour, {once: true, passive: true});
+
+            const steps = [
+                {target: 'header'},
+                {target: '.masterpiece-frame'},
+                {target: 'homeFilmStrip'},
+                {target: 'homePolaroidStrip'},
+                {target: 'sectionPrasasti', button: 'btnTogglePrasasti'},
+                {target: 'sectionBento', button: 'btnToggleBento'},
+                {target: 'sectionHall'},
+                {target: 'sectionTicket', button: 'btnToggleTicket'},
+                {target: 'sectionGuestbook'},
+                {target: 'sectionCards', button: 'btnToggleCards'},
+                {target: 'sectionSymphony'},
+                {target: '.reveal-text'},
+                {target: 'sectionConstellation', button: 'btnToggleConstellation'}
+            ];
+
+            for (const step of steps) {
+                if (!autoTourActive) return;
+                const selector = step.target.startsWith('.') || step.target === 'header'
+                    ? step.target
+                    : `#${step.target}`;
+                const target = document.querySelector(selector);
+                if (!target) continue;
+                if (step.button) {
+                    const section = document.getElementById(step.target);
+                    const button = document.getElementById(step.button);
+                    if (button && section && !section.classList.contains('content-visible')) {
+                        button.click();
+                        await waitForTour(800);
+                    }
+                }
+                if (!autoTourActive) return;
+                if (!await scrollToTourTarget(target)) return;
+                await waitForTour(1400);
+            }
+
+            if (!autoTourActive) return;
+            const magicStar = document.getElementById('magicStar');
+            if (!magicStar) return;
+            if (!await scrollToTourTarget(magicStar)) return;
+            await waitForTour(1400);
+            if (!autoTourActive) return;
+            autoTourActive = false;
+            magicStar.click();
+        }
+
+        // --- 4. SCRIPT SCROLL REVEAL TEXT ---
+        const revealText = document.querySelector('.reveal-text');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.5 });
+        if(revealText) revealObserver.observe(revealText);
+
+        // --- 5. SCRIPT CONFETTI UNTUK GOLDEN TICKET ---
+        function throwConfetti() {
+            const colors = ['#FBCFE8', '#BAE6FD', '#E0B093', '#FDE047', '#D4AF37'];
+            for(let i=0; i<60; i++) {
+                let conf = document.createElement('div');
+                conf.className = 'absolute w-2 h-4 z-[99999] rounded-sm pointer-events-none';
+                
+                conf.style.left = (Math.random() * 100) + '%';
+                conf.style.top = (window.scrollY + (window.innerHeight / 2)) + 'px';
+                
+                conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                conf.style.transition = 'all 2s cubic-bezier(0.25, 1, 0.5, 1)';
+                conf.style.transform = `rotate(${Math.random() * 360}deg)`;
+                document.body.appendChild(conf);
+                
+                setTimeout(() => {
+                    const randomX = (Math.random() * 500) - 250;
+                    const randomY = (Math.random() * 500) + 200; 
+                    conf.style.transform = `translate(${randomX}px, ${randomY}px) rotate(${Math.random() * 720}deg)`;
+                    conf.style.opacity = '0';
+                }, 50);
+                
+                setTimeout(() => conf.remove(), 2000);
+            }
+        }
+
+        // --- 6. SCRIPT CONSTELLATION & SMOOTH EXIT ---
+        const magicStar = document.getElementById('magicStar');
+        const constellationTitle = document.getElementById('constellationTitle');
+        const wishText = document.getElementById('wishText');
+        const pageExitOverlay = document.getElementById('pageExitOverlay');
+
+        if(magicStar) {
+            magicStar.addEventListener('click', () => {
+                magicStar.classList.add('star-burst');
+                constellationTitle.style.opacity = '0';
+                
+                setTimeout(() => {
+                    wishText.style.opacity = '1';
+                }, 600);
+
+                setTimeout(() => {
+                    pageExitOverlay.style.opacity = '1';
+                    pageExitOverlay.style.pointerEvents = 'all';
+                    
+                    setTimeout(() => {
+                        window.location.href = 'memori.html';
+                    }, 1000); 
+
+                }, 4000); 
+            });
+        }
+    </script>
+</body>
+</html>

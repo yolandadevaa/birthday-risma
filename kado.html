@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+    <title>Kado Yola - Kharisma Nia</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Birthstone&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    
+    <script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary-blue": "#BAE6FD", 
+                        "primary-pink": "#FBCFE8", 
+                        "royal-blue": "#0369a1", 
+                        "rose-gold": "#E0B093",
+                        "surface": "#ffffff",
+                    },
+                    fontFamily: {
+                        "serif-elegant": ["'Playfair Display'", "serif"],
+                        "handwriting": ["'Caveat'", "cursive"],
+                        "sans-clean": ["'Plus Jakarta Sans'", "sans-serif"],
+                        "royal": ["'Birthstone'", "cursive"],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* KUNCI HALAMAN AGAR SOLID & TIDAK GOYANG */
+        html, body { width: 100%; max-width: 100vw; overflow-x: hidden !important; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body { background-color: #ffffff; background-image: radial-gradient(at 100% 0%, rgba(186, 230, 253, 0.4) 0px, transparent 50%), radial-gradient(at 0% 100%, rgba(251, 207, 232, 0.4) 0px, transparent 50%); background-attachment: fixed; color: #1e293b; -webkit-font-smoothing: antialiased; transition: background-color 2s ease; }
+        body.mode-night { background-color: #0f172a; background-image: none; }
+
+        /* STARDUST PARTICLES */
+        .stardust { position: fixed; background: white; border-radius: 50%; pointer-events: none; opacity: 0.6; z-index: 1; box-shadow: 0 0 5px rgba(186, 230, 253, 0.8); animation: float-dust linear infinite; }
+        @keyframes float-dust { from { transform: translateY(100vh); opacity: 0; } to { transform: translateY(-10vh); opacity: 0.8; } }
+
+        /* ANIMASI MUNCUL */
+        .gift-reveal { animation: pop-up 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; opacity: 0; transform: scale(0.8); }
+        @keyframes pop-up { to { opacity: 1; transform: scale(1); } }
+
+        /* 1. SKARIGA LEGACY HALL (Lorong 3D) */
+        .hall-container { width: 100%; position: relative; height: 250px; overflow: hidden; perspective: 1000px; background: linear-gradient(to bottom, #ffffff, #f1f5f9); box-shadow: inset 0 20px 30px rgba(0,0,0,0.05); margin-bottom: 2rem; }
+        @media (min-width: 768px) { .hall-container { height: 350px; margin-bottom: 3rem; } }
+        .hall-path { width: 100%; height: 200%; position: absolute; bottom: 0; left: 0; background: repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(224, 176, 147, 0.2) 40px, rgba(224, 176, 147, 0.2) 42px), repeating-linear-gradient(90deg, transparent, transparent 100px, rgba(3, 105, 161, 0.05) 100px, rgba(3, 105, 161, 0.05) 102px); transform-origin: bottom; transform: rotateX(60deg); animation: walk-hall 10s linear infinite; }
+        @keyframes walk-hall { 0% { background-position: 0 0; } 100% { background-position: 0 100px; } }
+        .hall-pillar { position: absolute; width: 15px; height: 120px; background: linear-gradient(to right, #e2e8f0, #ffffff); box-shadow: 5px 0 15px rgba(0,0,0,0.1); border-radius: 8px 8px 0 0; }
+        @media (min-width: 768px) { .hall-pillar { width: 20px; height: 150px; border-radius: 10px 10px 0 0;} }
+        .pillar-l1 { left: 5%; bottom: 20%; transform: scale(1.5); opacity: 1; }
+        .pillar-r1 { right: 5%; bottom: 20%; transform: scale(1.5); opacity: 1; }
+        .pillar-l2 { left: 25%; bottom: 40%; transform: scale(1); opacity: 0.7; }
+        .pillar-r2 { right: 25%; bottom: 40%; transform: scale(1); opacity: 0.7; }
+        .pillar-l3 { left: 40%; bottom: 50%; transform: scale(0.6); opacity: 0.4; }
+        .pillar-r3 { right: 40%; bottom: 50%; transform: scale(0.6); opacity: 0.4; }
+
+        /* 2. ROYAL DIAMOND VAULT (Brankas Kaca) */
+        .vault-container { width: 220px; height: 220px; margin: 0 auto 3rem auto; border-radius: 2rem; position: relative; background: rgba(255,255,255,0.4); backdrop-filter: blur(20px); border: 4px solid rgba(255,255,255,0.9); box-shadow: inset 0 0 30px rgba(224, 176, 147, 0.5), 0 20px 40px rgba(3, 105, 161, 0.2); display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.5s ease; }
+        @media (min-width: 768px) { .vault-container { width: 280px; height: 280px; } }
+        .vault-wheel { width: 80px; height: 80px; border-radius: 50%; background: radial-gradient(circle, #ffffff, #e2e8f0); border: 4px solid #E0B093; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(0,0,0,0.1), inset 0 0 10px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.3s; }
+        @media (min-width: 768px) { .vault-wheel { width: 100px; height: 100px; border-width: 5px;} }
+        .vault-wheel:active { transform: rotate(45deg); }
+        .vault-input { width: 80%; background: rgba(255,255,255,0.8); border: 2px solid #BAE6FD; border-radius: 10px; text-align: center; font-size: 1.2rem; letter-spacing: 4px; color: #0369a1; font-weight: bold; margin-top: 20px; outline: none; padding: 5px; }
+        .vault-shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
+        @keyframes shake { 10%, 90% { transform: translate3d(-2px, 0, 0); } 20%, 80% { transform: translate3d(4px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-8px, 0, 0); } 40%, 60% { transform: translate3d(8px, 0, 0); } }
+        .vault-open-effect { transform: scale(1.1); filter: brightness(1.5) blur(3px); opacity: 0; pointer-events: none; }
+
+        /* ==================================================== */
+        /* 3. NEW THEME: BLUE ROSES BLACK WRAPPING BOUQUET CSS  */
+        /* ==================================================== */
+        .bouquet-wrapper { display: none; opacity: 0; flex-direction: column; align-items: center; width: 100%; position: relative; transition: opacity 1s ease-in-out; margin-bottom: 4rem; margin-top: 1rem; }
+        .bouquet-wrapper.revealed { display: flex; opacity: 1; }
+        
+        .bouquet-drawing-area { position: relative; width: 100%; height: 350px; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 20px; }
+        @media (min-width: 768px) { .bouquet-drawing-area { height: 420px; } }
+
+        /* Buket Bagian Atas (Mawar & Kertas) */
+        .css-bouquet { position: relative; width: 240px; height: 240px; z-index: 4; transform: scale(0.5); opacity: 0; transition: transform 1.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.5s, opacity 1s 0.5s; display: flex; align-items: center; justify-content: center; }
+        @media (min-width: 768px) { .css-bouquet { width: 280px; height: 280px; } }
+        .bouquet-wrapper.revealed .css-bouquet { transform: scale(1); opacity: 1; pointer-events: auto;}
+
+        /* Kertas Kado Hitam / Elegan */
+        .wrap-back { position: absolute; width: 100%; height: 100%; background: linear-gradient(135deg, #1e293b, #020617); border-radius: 10px; transform: rotate(45deg); box-shadow: 0 15px 30px rgba(0,0,0,0.5); z-index: 1; border: 1px solid #334155; }
+        .wrap-layer1 { position: absolute; width: 90%; height: 90%; background: linear-gradient(135deg, #334155, #0f172a); border-radius: 8px; transform: rotate(15deg); z-index: 2; border: 1px solid #475569; }
+        .wrap-layer2 { position: absolute; width: 85%; height: 85%; background: linear-gradient(135deg, #0f172a, #000000); border-radius: 5px; transform: rotate(75deg); z-index: 2; border: 1px solid #1e293b; }
+
+        /* Mawar Biru Glitter (Real Rose Structure) */
+        .blue-rose { position: absolute; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(0,0,0,0.5); z-index: 4; }
+        .petal { position: absolute; background: linear-gradient(135deg, #38bdf8, #0284c7, #172554); border-radius: 50% 10% 50% 50%; box-shadow: inset 2px -2px 6px rgba(255,255,255,0.2), 0 2px 5px rgba(0,0,0,0.4); border: 1px solid #0369a1; }
+        /* Glitter Overlay */
+        .blue-rose::after { content: ''; position: absolute; inset: 0; background-image: radial-gradient(white 1px, transparent 1px); background-size: 8px 8px; opacity: 0.15; border-radius: 50%; pointer-events: none; mix-blend-mode: screen;}
+        
+        /* Rotasi Kelopak */
+        .p1 { width: 100%; height: 100%; transform: rotate(0deg); }
+        .p2 { width: 80%; height: 80%; transform: rotate(70deg); }
+        .p3 { width: 60%; height: 60%; transform: rotate(140deg); }
+        .p4 { width: 40%; height: 40%; transform: rotate(210deg); }
+        .p5 { width: 20%; height: 20%; transform: rotate(280deg); }
+
+        /* Posisi Rimbun Mawar Biru */
+        .br-1 { width: 70px; height: 70px; top: 30px; left: 85px; transform: rotate(15deg); }
+        .br-2 { width: 65px; height: 65px; top: 70px; left: 35px; transform: rotate(-25deg); }
+        .br-3 { width: 65px; height: 65px; top: 60px; right: 35px; transform: rotate(45deg); }
+        .br-4 { width: 75px; height: 75px; bottom: 40px; left: 55px; transform: rotate(10deg); }
+        .br-5 { width: 70px; height: 70px; bottom: 50px; right: 45px; transform: rotate(-10deg); }
+        .br-6 { width: 85px; height: 85px; top: 75px; left: 75px; z-index: 5; transform: rotate(5deg); box-shadow: 0 10px 25px rgba(0,0,0,0.6);} /* Center */
+
+        /* Fairy Lights (Lampu Kelap-Kelip) */
+        .fairy-light { position: absolute; width: 6px; height: 6px; background: #fef08a; border-radius: 50%; box-shadow: 0 0 10px #fef08a, 0 0 20px #f59e0b; z-index: 5; animation: twinkle 1s infinite alternate; }
+        .fl-1 { top: 40px; left: 60px; animation-delay: 0.1s; }
+        .fl-2 { top: 100px; right: 20px; animation-delay: 0.4s; }
+        .fl-3 { bottom: 50px; left: 30px; animation-delay: 0.7s; }
+        .fl-4 { bottom: 30px; right: 60px; animation-delay: 0.2s; }
+        .fl-5 { top: 20px; right: 80px; animation-delay: 0.5s; }
+        @keyframes twinkle { 0% { opacity: 0.3; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.5); } }
+
+        /* Pita Graduasi Biru (Sash) */
+        .sash { position: absolute; width: 110%; height: 35px; background: linear-gradient(to right, #0284c7, #0369a1, #0284c7); z-index: 6; top: 120px; left: -5%; transform: rotate(-15deg); display: flex; align-items: center; justify-content: center; color: white; font-family: 'Playfair Display', serif; font-weight: bold; font-style: italic; font-size: 14px; letter-spacing: 1px; box-shadow: 0 5px 15px rgba(0,0,0,0.6); border-top: 1px solid #7dd3fc; border-bottom: 1px solid #7dd3fc; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); }
+
+        /* Pegangan Buket Hitam (Ganti Vas Kaca) */
+        .bouquet-handle { width: 50px; height: 100px; background: linear-gradient(to right, #1e293b, #0f172a, #1e293b); border-radius: 0 0 15px 15px; position: relative; z-index: 3; margin-top: -20px; box-shadow: 0 15px 20px rgba(0,0,0,0.4); transition: transform 1.5s 0.5s, opacity 1s 0.5s; opacity: 0; transform: translateY(50px); }
+        .bouquet-wrapper.revealed .bouquet-handle { transform: translateY(0); opacity: 1; }
+        
+        /* Pita di Pegangan */
+        .handle-ribbon { position: absolute; width: 100%; height: 15px; background: #0284c7; top: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        .handle-tie-1 { position: absolute; width: 25px; height: 25px; border: 2px solid #0284c7; border-radius: 50% 50% 0 50%; top: 15px; left: -5px; transform: rotate(45deg); z-index: 2;}
+        .handle-tie-2 { position: absolute; width: 25px; height: 25px; border: 2px solid #0284c7; border-radius: 50% 50% 50% 0; top: 15px; right: -5px; transform: rotate(-45deg); z-index: 2;}
+
+        /* Kartu Ucapan */
+        .bouquet-card { position: absolute; bottom: 20px; right: 10px; width: 50px; height: 35px; background: white; border-radius: 5px; box-shadow: 0 8px 15px rgba(0,0,0,0.4); transform: rotate(15deg); cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; transition: all 0.3s; border: 1px solid #cbd5e1;}
+        .bouquet-card:hover { transform: rotate(0) scale(1.3); }
+
+        /* ==================================================== */
+        /* 4. IDE BARU A: SPIN THE WHEEL                        */
+        /* ==================================================== */
+        .roulette-wrapper { width: 100%; display: flex; flex-direction: column; align-items: center; margin-bottom: 4rem; overflow: hidden; padding: 1rem 0; }
+        .roulette-container { position: relative; width: 200px; height: 200px; margin: 0 auto; border-radius: 50%; border: 6px solid #E0B093; box-shadow: 0 15px 30px rgba(0,0,0,0.1), inset 0 0 20px rgba(0,0,0,0.2); background: white;}
+        @media (min-width: 768px) { .roulette-container { width: 250px; height: 250px; } }
+        .roulette-wheel { width: 100%; height: 100%; border-radius: 50%; background: conic-gradient(#FBCFE8 0 120deg, #BAE6FD 120deg 240deg, #E0B093 240deg 360deg); transition: transform 3s cubic-bezier(0.25, 0.1, 0.25, 1); }
+        .roulette-wheel::after { content: ''; position: absolute; inset: 0; background: conic-gradient(from -1deg, transparent 0 119deg, rgba(255,255,255,0.8) 119deg 121deg, transparent 121deg 239deg, rgba(255,255,255,0.8) 239deg 241deg, transparent 241deg 359deg, rgba(255,255,255,0.8) 359deg 360deg); border-radius: 50%; }
+        .roulette-pointer { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-top: 30px solid #db2777; z-index: 10; filter: drop-shadow(0 4px 4px rgba(0,0,0,0.3)); }
+        .roulette-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; background: white; border-radius: 50%; border: 4px solid #E0B093; z-index: 5; box-shadow: 0 4px 10px rgba(0,0,0,0.2); cursor: pointer; }
+        .roulette-result { max-height: 0; opacity: 0; overflow: hidden; transition: all 0.5s; background: rgba(255,255,255,0.8); border: 2px solid #BAE6FD; border-radius: 15px; padding: 0 20px; text-align: center; box-shadow: 0 10px 20px rgba(3,105,161,0.1); margin-top: 0; }
+        .roulette-wrapper.spun .roulette-result { max-height: 150px; opacity: 1; margin-top: 20px; padding: 15px 20px; }
+
+        /* ==================================================== */
+        /* 5. IDE BARU B: GLOWING TIME CAPSULE                  */
+        /* ==================================================== */
+        .capsule-wrapper { width: 100%; display: flex; flex-direction: column; align-items: center; margin-bottom: 4rem; padding: 1rem 0; }
+        .capsule-bottle { width: 80px; height: 130px; border-radius: 30px 30px 45px 45px; background: linear-gradient(135deg, rgba(255,255,255,0.6), rgba(255,255,255,0.1)); border: 3px solid rgba(255,255,255,0.9); position: relative; box-shadow: 0 10px 30px rgba(186, 230, 253, 0.8), inset 0 0 15px rgba(255,255,255,0.8); cursor: pointer; transition: all 0.3s ease-out; margin: 0 auto; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        .capsule-bottle:hover { transform: scale(1.05) rotate(5deg); box-shadow: 0 15px 40px rgba(186, 230, 253, 1), inset 0 0 20px rgba(255,255,255,1); }
+        .capsule-bottle::before { content: ''; position: absolute; top: -18px; left: 50%; transform: translateX(-50%); width: 35px; height: 20px; background: #c2410c; border-radius: 5px 5px 0 0; box-shadow: inset 0 2px 5px rgba(0,0,0,0.3); }
+        .capsule-bottle::after { content: ''; position: absolute; width: 40px; height: 60px; background: #fef3c7; border-radius: 5px; border-left: 2px solid #d97706; transform: rotate(10deg); box-shadow: 2px 2px 5px rgba(0,0,0,0.2); }
+        .capsule-bottle.broken { transform: scale(1.3); opacity: 0; pointer-events: none; filter: blur(10px); }
+        .capsule-msg { max-height: 0; opacity: 0; overflow: hidden; transition: all 1s 0.3s; background: white; border: 1px dashed #E0B093; border-radius: 10px; padding: 0 20px; text-align: center; box-shadow: 0 15px 30px rgba(224, 176, 147, 0.3); margin-top: 0; max-width: 300px; }
+        .capsule-wrapper.opened .capsule-msg { max-height: 300px; opacity: 1; margin-top: -60px; padding: 20px; }
+
+        /* ==================================================== */
+        /* 6. IDE BARU C: POLAROID WASH (Cuci Foto)             */
+        /* ==================================================== */
+        .polaroid-wrapper { width: 100%; display: flex; flex-direction: column; align-items: center; margin-bottom: 4rem; overflow: hidden; padding: 1rem 0; }
+        .polaroid { background: white; padding: 15px 15px 50px 15px; box-shadow: 0 15px 35px rgba(0,0,0,0.15); width: 240px; transform: rotate(-3deg); transition: transform 0.5s; position: relative; }
+        .polaroid:hover { transform: rotate(0deg) scale(1.05); }
+        .polaroid-inner { position: relative; width: 100%; height: 220px; background: #e2e8f0; overflow: hidden; border: 1px solid #cbd5e1; }
+        .polaroid-img { width: 100%; height: 100%; object-fit: cover; }
+        .polaroid-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, #94a3b8, #cbd5e1); z-index: 2; transition: opacity 1.5s; cursor: grab; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .polaroid-overlay.washed { opacity: 0; pointer-events: none; }
+
+        /* ==================================================== */
+        /* 7. IDE BARU D: GOLDEN TROPHY 3D                      */
+        /* ==================================================== */
+        .trophy-wrapper { width: 100%; display: flex; flex-direction: column; align-items: center; margin-bottom: 5rem; padding: 1rem 0; }
+        .trophy-container { position: relative; width: 140px; height: 170px; margin: 0 auto; cursor: pointer; transition: transform 0.3s; z-index: 10; }
+        .trophy-container:hover { transform: scale(1.1); }
+        .trophy-cup { position: absolute; top: 0; left: 30px; width: 80px; height: 85px; background: radial-gradient(circle at 30% 30%, #fef08a, #d97706); border-radius: 10px 10px 40px 40px; box-shadow: inset -5px -5px 15px rgba(0,0,0,0.3), 0 10px 15px rgba(0,0,0,0.2); z-index: 2; border-top: 5px solid #fde047; }
+        .trophy-base { position: absolute; bottom: 0; left: 40px; width: 60px; height: 75px; background: linear-gradient(to right, #b45309, #fef08a, #92400e); clip-path: polygon(20% 0, 80% 0, 100% 100%, 0 100%); box-shadow: 0 15px 20px rgba(0,0,0,0.3); }
+        .trophy-handles { position: absolute; top: 15px; left: 10px; width: 120px; height: 50px; border-radius: 50px; border: 8px solid #d97706; z-index: 1; box-shadow: 0 5px 10px rgba(0,0,0,0.2); }
+        .trophy-star { position: absolute; top: -20px; left: 50%; transform: translateX(-50%); color: #fde047; font-size: 30px; filter: drop-shadow(0 0 10px #fde047); z-index: 3; animation: bounce-star 2s infinite; }
+        @keyframes bounce-star { 0%, 100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, -10px); } }
+        
+        .trophy-plate { max-height: 0; opacity: 0; transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); overflow: hidden; background: linear-gradient(135deg, #ffffff, #f1f5f9); border: 2px solid #fde047; border-radius: 15px; text-align: center; box-shadow: 0 15px 30px rgba(217, 119, 6, 0.2); max-width: 300px; margin-top: 0;}
+        .trophy-wrapper.claimed .trophy-plate { max-height: 200px; opacity: 1; margin-top: 25px; padding: 20px; }
+        .confetti { position: fixed; width: 10px; height: 10px; background-color: #fde047; z-index: 1000; pointer-events: none; animation: pop-confetti 2s ease-out forwards; }
+        @keyframes pop-confetti { 0% { transform: translateY(0) rotate(0) scale(1); opacity: 1; } 100% { transform: translateY(-50vh) translateX(var(--drift)) rotate(720deg) scale(0); opacity: 0; } }
+
+        /* ==================================================== */
+        /* 8. MEMORY THEATER (Bioskop Kenangan) - FIX TIRAI     */
+        /* ==================================================== */
+        .theater-frame { width: 100%; max-width: 400px; margin: 0 auto 3rem auto; aspect-ratio: 16/9; background: #111; border: 6px solid #E0B093; border-radius: 8px; box-shadow: 0 20px 40px rgba(0,0,0,0.3), inset 0 0 30px rgba(0,0,0,0.8); position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        @media (min-width: 768px) { .theater-frame { border-width: 8px; border-radius: 10px; margin-bottom: 4rem; } }
+        
+        /* Background merah solidnya sudah dihapus jadi transparent! */
+        .theater-curtain { position: absolute; inset: 0; background: transparent; z-index: 10; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+        
+        .theater-curtain-l { width: 50%; height: 100%; background: linear-gradient(to right, #881337, #be123c); transform-origin: left; transition: transform 1.5s ease-in-out; border-right: 2px solid #fda4af; pointer-events: auto; }
+        .theater-curtain-r { width: 50%; height: 100%; background: linear-gradient(to left, #881337, #be123c); transform-origin: right; transition: transform 1.5s ease-in-out; border-left: 2px solid #fda4af; pointer-events: auto; }
+        
+        .theater-frame.playing .theater-curtain-l { transform: scaleX(0); }
+        .theater-frame.playing .theater-curtain-r { transform: scaleX(0); }
+        
+        .theater-btn { position: absolute; z-index: 20; width: 50px; height: 50px; background: rgba(255,255,255,0.2); backdrop-filter: blur(5px); border-radius: 50%; border: 2px solid white; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s; pointer-events: auto; }
+        @media (min-width: 768px) { .theater-btn { width: 60px; height: 60px; } }
+        .theater-btn:hover { background: rgba(255,255,255,0.4); transform: scale(1.1); }
+        .theater-frame.playing .theater-btn { opacity: 0; pointer-events: none; }
+        
+        .theater-screen { width: 100%; height: 100%; object-fit: cover; opacity: 0.5; transition: opacity 1s; }
+        .theater-frame.playing .theater-screen { opacity: 1; }
+
+        /* ==================================================== */
+        /* 9. SKENA SKY LANTERN (LAMPION KOTAK MINIMALIS)       */
+        /* ==================================================== */
+        .wish-container { width: 100%; text-align: center; margin-bottom: 4rem; transition: opacity 1s; display: flex; flex-direction: column; align-items: center; }
+        
+        .skena-lantern { 
+            width: 65px; height: 90px; margin: 0 auto 2rem auto; position: relative; 
+            background: linear-gradient(180deg, #fef08a 0%, #f59e0b 80%, #ea580c 100%); 
+            border-radius: 4px; box-shadow: 0 0 40px rgba(245, 158, 11, 0.8), inset 0 0 20px rgba(255,255,255,0.6); 
+            transition: all 3s cubic-bezier(0.4, 0, 0.2, 1); 
+        }
+        @media (min-width: 768px) { .skena-lantern { width: 75px; height: 100px; } }
+        
+        .skena-lantern::before {
+            content: ''; position: absolute; inset: 0;
+            background: repeating-linear-gradient(90deg, transparent, transparent 15px, rgba(0,0,0,0.05) 15px, rgba(0,0,0,0.05) 16px);
+            border-radius: 4px; pointer-events: none;
+        }
+        .skena-lantern::after {
+            content: ''; position: absolute; bottom: -6px; left: 10%; width: 80%; height: 6px;
+            background: #78350f; border-radius: 2px; box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+
+        .skena-lantern.fly { transform: translateY(-150vh) scale(0.5); opacity: 0; box-shadow: 0 0 100px rgba(255,255,255,1); }
+        
+        .wish-input { 
+            width: 80%; max-width: 300px; padding: 12px; border-radius: 0; border: none; border-bottom: 2px solid #0369a1; 
+            background: transparent; outline: none; text-align: center; font-family: 'Plus Jakarta Sans', sans-serif; 
+            font-weight: bold; color: #0369a1; margin-bottom: 1.5rem; font-size: 0.8rem; transition: all 0.3s;
+        }
+        .wish-input:focus { border-bottom-color: #db2777; background: rgba(255,255,255,0.5); }
+        @media (min-width: 768px) { .wish-input { font-size: 1rem;} }
+
+        .wish-btn { 
+            background: transparent; color: #0369a1; border: 1px solid #0369a1; 
+            border-radius: 4px; padding: 10px 25px; letter-spacing: 2px; font-weight: bold;
+            transition: all 0.3s; font-size: 0.8rem; text-transform: uppercase; cursor: pointer;
+        }
+        .wish-btn:hover { background: #0369a1; color: white; box-shadow: 0 5px 15px rgba(3,105,161,0.3); }
+        @media (min-width: 768px) { .wish-btn { padding: 12px 30px; font-size: 1rem; } }
+        .wish-btn:active { transform: scale(0.95); }
+        
+        .final-goodbye { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(15, 23, 42, 0.9); z-index: 100000; opacity: 0; pointer-events: none; transition: opacity 2s 1s; flex-direction: column;}
+        .final-goodbye.show { opacity: 1; pointer-events: all; }
+
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center font-sans-clean relative overflow-x-hidden w-full">
+
+    <div id="stardustContainer"></div>
+
+    <nav class="w-full sticky top-0 z-50 bg-white/60 backdrop-blur-md border-b border-rose-gold/20 shadow-sm transition-colors duration-1000">
+        <div class="max-w-4xl mx-auto px-4 md:px-6 py-4 flex justify-between items-center w-full">
+            <span class="text-2xl md:text-3xl font-royal text-royal-blue drop-shadow-sm" id="navBrand">Kharisma Nia.</span>
+            <div class="flex gap-3 md:gap-4 items-center">
+                <a href="pesan.html" class="text-slate-400 hover:text-royal-blue font-sans-clean text-[10px] md:text-xs font-bold uppercase tracking-wider transition-colors">Surat</a>
+                <span class="text-[10px] md:text-xs text-rose-gold">•</span>
+                <span class="text-royal-blue font-sans-clean text-[10px] md:text-xs font-bold uppercase tracking-wider border-b-2 border-royal-blue" id="navMenu">Kado Spesial</span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="w-full max-w-3xl mx-auto px-0 flex flex-col items-center pt-0 pb-20 z-10 relative flex-grow overflow-x-hidden">
+        
+        <div class="hall-container">
+            <div class="hall-path"></div>
+            <div class="hall-pillar pillar-l1"></div>
+            <div class="hall-pillar pillar-l2"></div>
+            <div class="hall-pillar pillar-l3"></div>
+            <div class="hall-pillar pillar-r1"></div>
+            <div class="hall-pillar pillar-r2"></div>
+            <div class="hall-pillar pillar-r3"></div>
+            
+            <div class="absolute inset-0 flex flex-col items-center justify-center z-10 bg-gradient-to-b from-transparent to-white/80 pb-6 md:pb-10">
+                <span class="material-symbols-outlined text-4xl md:text-5xl text-rose-gold mb-1 md:mb-2 drop-shadow-md animate-bounce">redeem</span>
+                <p class="font-sans-clean text-[9px] md:text-[10px] text-royal-blue tracking-[0.4em] font-black uppercase opacity-70">REWARD UNTUK SANG RATU</p>
+                <h1 class="font-serif-elegant text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-royal-blue via-rose-gold to-pink-400 leading-tight mt-1 uppercase tracking-widest drop-shadow-sm text-center px-4">
+                    Klaim Hadiahmu!
+                </h1>
+            </div>
+        </div>
+
+        <div class="w-full px-6 mb-4 md:mb-8 text-center" id="vaultSection">
+            <h3 class="font-sans-clean text-[10px] md:text-xs font-black text-royal-blue tracking-[0.3em] uppercase mb-1 md:mb-2">Akses Brankas Ratu</h3>
+            <p class="text-[9px] md:text-[10px] text-slate-500 uppercase tracking-widest mb-4 md:mb-6">Masukkan tahun kelulusan untuk membuka</p>
+            
+            <div class="vault-container" id="vaultBox">
+                <div class="vault-wheel" id="vaultWheel">
+                    <span class="material-symbols-outlined text-3xl md:text-4xl text-rose-gold">lock</span>
+                </div>
+                <input type="tel" maxlength="4" class="vault-input" id="vaultInput" placeholder="----">
+            </div>
+        </div>
+
+        <div class="bouquet-wrapper" id="bouquetBox">
+            <h3 class="font-serif-elegant text-2xl md:text-3xl font-bold text-royal-blue mb-2 text-center px-4">For The Beautiful Queen! 💙</h3>
+            <div class="w-full px-6 mb-4 md:mb-8 text-center" id="vaultSection"></div>
+            <p class="text-[9px] text-slate-500 uppercase tracking-widest mb-4 text-center">Buket mawar biru anti layu</p>
+            <div class="w-full px-6 mb-4 md:mb-10 text-center" id="vaultSection"></div>
+            <div class="bouquet-drawing-area">
+                <div class="css-bouquet">
+                    <div class="wrap-back"></div>
+                    <div class="wrap-layer1"></div>
+                    <div class="wrap-layer2"></div>
+                    
+                    <div class="fairy-light fl-1"></div>
+                    <div class="fairy-light fl-2"></div>
+                    <div class="fairy-light fl-3"></div>
+                    <div class="fairy-light fl-4"></div>
+                    <div class="fairy-light fl-5"></div>
+
+                    <div class="blue-rose br-1"><div class="petal p1"></div><div class="petal p2"></div><div class="petal p3"></div><div class="petal p4"></div><div class="petal p5"></div></div>
+                    <div class="blue-rose br-2"><div class="petal p1"></div><div class="petal p2"></div><div class="petal p3"></div><div class="petal p4"></div><div class="petal p5"></div></div>
+                    <div class="blue-rose br-3"><div class="petal p1"></div><div class="petal p2"></div><div class="petal p3"></div><div class="petal p4"></div><div class="petal p5"></div></div>
+                    <div class="blue-rose br-4"><div class="petal p1"></div><div class="petal p2"></div><div class="petal p3"></div><div class="petal p4"></div><div class="petal p5"></div></div>
+                    <div class="blue-rose br-5"><div class="petal p1"></div><div class="petal p2"></div><div class="petal p3"></div><div class="petal p4"></div><div class="petal p5"></div></div>
+                    <div class="blue-rose br-6"><div class="petal p1"></div><div class="petal p2"></div><div class="petal p3"></div><div class="petal p4"></div><div class="petal p5"></div></div> 
+                    
+                    <div class="sash">Happy Graduation</div>
+
+                    <div class="bouquet-card" onclick="alert('Pesan dari Yola: Bunga ini emang boongan, tapi sayangnya Yola ke Kakak beneran! Mawar biru gelap artinya kekuatan & misteri kehidupan baru yang siap Kakak hadapi! 💙✨')">
+                        <span class="material-symbols-outlined text-royal-blue text-[10px] md:text-sm">mail</span>
+                    </div>
+                </div>
+                
+                <div class="bouquet-handle">
+                    <div class="handle-ribbon"></div>
+                    <div class="handle-tie-1"></div>
+                    <div class="handle-tie-2"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="roulette-wrapper gift-reveal" id="rouletteWrap" style="animation-delay: 0.5s;">
+            <div class="text-center mb-6">
+                <h3 class="font-sans-clean text-[10px] md:text-xs font-black text-royal-blue tracking-[0.3em] uppercase">Roda Nasib Ratu</h3>
+                <p class="text-[9px] md:text-[10px] text-slate-500 uppercase tracking-widest">Ketuk bagian tengah roda</p>
+            </div>
+            <div class="roulette-container" id="rouletteBox">
+                <div class="roulette-pointer"></div>
+                <div class="roulette-center flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[15px] text-rose-gold">touch_app</span>
+                </div>
+                <div class="roulette-wheel" id="rouletteWheel"></div>
+            </div>
+            <div class="roulette-result">
+                <h4 class="font-serif-elegant font-bold text-pink-500 text-sm mb-1 mt-2">Ramalan Masa Depan:</h4>
+                <p class="font-handwriting text-xl text-royal-blue" id="rouletteText">...</p>
+            </div>
+        </div>
+
+        <div class="capsule-wrapper gift-reveal" id="capsuleWrap" style="animation-delay: 0.7s;">
+            <div class="text-center mb-6">
+                <h3 class="font-sans-clean text-[10px] md:text-xs font-black text-royal-blue tracking-[0.3em] uppercase">Kapsul Waktu</h3>
+                <p class="text-[9px] md:text-[10px] text-slate-500 uppercase tracking-widest">Ketuk botol berkali-kali untuk pecahkan</p>
+            </div>
+            <div class="capsule-bottle" id="capsuleBottle">
+                <span class="material-symbols-outlined text-white text-3xl opacity-50">hourglass_empty</span>
+            </div>
+            <div class="capsule-msg">
+                <span class="material-symbols-outlined text-rose-gold text-2xl mb-1 mt-2">auto_awesome</span>
+                <p class="font-serif-elegant text-royal-blue font-bold text-sm">5 Tahun Dari Sekarang...</p>
+                <p class="font-sans-clean text-[10px] text-slate-600 mt-2 leading-relaxed">Kak Risma udah jadi pengusaha muda sukses, liburan ke luar negeri, dan pastinya tetep rajin ngasih Yola jatah bulanan! Aamiin paling kenceng! 💸🌍</p>
+            </div>
+        </div>
+
+        <div class="polaroid-wrapper gift-reveal" style="animation-delay: 0.9s;">
+            <div class="text-center mb-6">
+                <h3 class="font-sans-clean text-[10px] md:text-xs font-black text-royal-blue tracking-[0.3em] uppercase">Memori Skariga</h3>
+                <p class="text-[9px] md:text-[10px] text-slate-500 uppercase tracking-widest">Usap foto untuk mencuci filmnya</p>
+            </div>
+            <div class="polaroid">
+                <div class="polaroid-inner" id="polaroidInner">
+                    <img src="foto-index-1.jpeg" class="polaroid-img" alt="Kenangan">
+                    <div class="polaroid-overlay" id="polaroidOverlay">
+                        <span class="material-symbols-outlined text-white text-4xl mb-2">touch_app</span>
+                        <p class="text-[9px] font-bold text-white uppercase tracking-widest">Usap Layar</p>
+                    </div>
+                </div>
+                <p class="font-handwriting text-xl text-center text-slate-700 mt-4">Akhirnya Lulus Juga!</p>
+            </div>
+        </div>
+
+        <div class="trophy-wrapper gift-reveal" id="trophyWrap" style="animation-delay: 1.1s;">
+            <div class="text-center mb-6">
+                <h3 class="font-sans-clean text-[10px] md:text-xs font-black text-royal-blue tracking-[0.3em] uppercase">Penghargaan Ratu</h3>
+                <p class="text-[9px] md:text-[10px] text-slate-500 uppercase tracking-widest">Ketuk piala untuk klaim titel</p>
+            </div>
+            <div class="trophy-container" id="trophyBtn">
+                <span class="material-symbols-outlined trophy-star">star</span>
+                <div class="trophy-handles"></div>
+                <div class="trophy-cup"></div>
+                <div class="trophy-base"></div>
+            </div>
+            <div class="trophy-plate">
+                <span class="material-symbols-outlined text-yellow-500 text-2xl mb-1 mt-1">workspace_premium</span>
+                <h4 class="font-sans-clean font-black text-[9px] uppercase tracking-[0.2em] text-slate-400 mb-1">Certified By Yola</h4>
+                <p class="font-serif-elegant text-lg font-bold text-royal-blue">The Strongest Sister 2026</p>
+            </div>
+        </div>
+
+        <div class="w-full px-6 mb-16 md:mb-20">
+            <div class="text-center mb-4 md:mb-6">
+                <h3 class="font-sans-clean text-[10px] md:text-xs font-black text-royal-blue tracking-[0.3em] uppercase">Sisterhood Cinema</h3>
+                <p class="text-[9px] md:text-[10px] text-slate-500 uppercase tracking-widest">Memori singkat kita</p>
+            </div>
+            
+            <div class="theater-frame" id="cinemaFrame">
+                <video id="theaterVideo" class="theater-screen relative z-[5]" playsinline webkit-playsinline preload="metadata">
+                    <source src="kakak-video.mp4" type="video/mp4">
+                    Maaf, browser kamu tidak mendukung pemutaran video ini.
+                </video>
+                <div class="theater-curtain">
+                    <div class="theater-curtain-l"></div>
+                    <div class="theater-curtain-r"></div>
+                </div>
+                <div class="theater-btn" id="playCinema">
+                    <span class="material-symbols-outlined text-2xl md:text-3xl pl-1">play_arrow</span>
+                </div>
+            </div>
+            <p class="text-[8px] md:text-[9px] text-center text-slate-400 italic mt-2"></p>
+        </div>
+
+        <div class="w-full px-6 mb-6 md:mb-10" id="finalWishSection">
+            <div class="wish-container">
+                <div class="text-center mb-6 md:mb-8">
+                    <h3 class="font-serif-elegant text-xl md:text-2xl font-bold text-royal-blue transition-colors duration-1000" id="wishTitle">Satu Harapan Terakhir</h3>
+                    <p class="text-[10px] md:text-[11px] text-slate-500 mt-1 md:mt-2 transition-colors duration-1000" id="wishSub">Tulis harapan terbesarmu setelah lulus, lalu terbangkan.</p>
+                </div>
+                
+                <div class="skena-lantern" id="theLantern"></div>
+                
+                <input type="text" class="wish-input" id="wishInput" placeholder="Ketik harapanmu di sini...">
+                <button class="wish-btn" id="btnFlyLantern">Terbangkan ✨</button>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="w-full bg-white/90 py-8 md:py-10 px-6 border-t border-rose-gold/20 text-center relative z-10 mt-auto transition-colors duration-1000">
+        <h3 class="font-royal text-4xl md:text-5xl text-rose-gold drop-shadow-sm">Yola ❤️</h3>
+        <p class="text-[8px] md:text-[9px] font-bold tracking-[0.2em] uppercase text-royal-blue/60 mt-1 md:mt-2">© 2026 • Exclusive for Kharisma Nia Rimadhani</p>
+    </footer>
+
+    <div class="final-goodbye" id="goodbyeScreen">
+        <h1 class="font-serif-elegant text-3xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-sky-200 to-sky-500 text-center mb-2 md:mb-4">Happy Graduation!</h1>
+        <h2 class="font-royal text-4xl md:text-5xl text-white text-center">Ratu Kharisma Nia</h2>
+        <p class="font-sans-clean text-[10px] md:text-xs text-slate-400 tracking-widest mt-6 md:mt-8 animate-pulse">Semoga harapanmu terkabul.</p>
+    </div>
+
+    <audio id="myAudio" src="lagu-kakak.mp3" loop preload="auto"></audio>
+
+    <script>
+        // --- SCRIPT STARDUST ---
+        const container = document.getElementById('stardustContainer');
+        for (let i = 0; i < 20; i++) {
+            const star = document.createElement('div');
+            star.className = 'stardust';
+            const size = Math.random() * 4 + 2 + 'px';
+            star.style.width = size; star.style.height = size;
+            star.style.left = Math.random() * 100 + '%';
+            star.style.animationDuration = Math.random() * 3 + 3 + 's';
+            star.style.animationDelay = Math.random() * 5 + 's';
+            container.appendChild(star);
+        }
+
+        // --- SCRIPT CONTINUOUS AUDIO ---
+        const myAudio = document.getElementById('myAudio');
+        const savedTime = localStorage.getItem('bgmTime');
+        const savedState = localStorage.getItem('bgmState');
+
+        function resumeAudio() {
+            if (savedTime !== null && !isNaN(savedTime)) { myAudio.currentTime = parseFloat(savedTime); }
+            if (savedState === 'playing') {
+                myAudio.play().catch(e => {
+                    document.body.addEventListener('click', () => {
+                        myAudio.play(); localStorage.setItem('bgmState', 'playing');
+                    }, { once: true });
+                });
+            }
+        }
+        window.addEventListener('load', resumeAudio);
+        myAudio.addEventListener('timeupdate', () => { localStorage.setItem('bgmTime', myAudio.currentTime); });
+
+        // ==========================================
+        // SCRIPT BRANKAS & BUKET MAWAR CSS
+        // ==========================================
+        const vaultInput = document.getElementById('vaultInput');
+        const vaultSection = document.getElementById('vaultSection');
+        const bouquetBox = document.getElementById('bouquetBox');
+        
+        vaultInput.addEventListener('input', function() {
+            if(this.value.length === 4) {
+                if(this.value === '2026') { 
+                    vaultSection.classList.add('vault-open-effect');
+                    setTimeout(() => {
+                        vaultSection.style.display = 'none'; 
+                        bouquetBox.classList.add('revealed'); 
+                    }, 500);
+                } else { 
+                    vaultSection.classList.add('vault-shake');
+                    this.style.color = 'red';
+                    this.style.borderColor = 'red';
+                    setTimeout(() => {
+                        vaultSection.classList.remove('vault-shake');
+                        this.value = '';
+                        this.style.color = '';
+                        this.style.borderColor = '';
+                    }, 500);
+                }
+            }
+        });
+
+        // ==========================================
+        // SCRIPT 4 IDE BARU (PENGGANTI VOUCHER)
+        // ==========================================
+
+        // IDE A: SPIN THE WHEEL
+        const rouletteBox = document.getElementById('rouletteBox');
+        const rouletteWheel = document.getElementById('rouletteWheel');
+        const rouletteWrap = document.getElementById('rouletteWrap');
+        const rouletteText = document.getElementById('rouletteText');
+        const ramalan = [
+            "Karir Melejit Tajam! 🚀", 
+            "Dapet Jodoh Spek Oppa! 💖", 
+            "Gaji 2 Digit Tahun Depan! 💸", 
+            "Makin Glow Up Maksimal! ✨",
+            "Apes: Harus Traktir Yola! 🍜"
+        ];
+        let currentRot = 0;
+        
+        rouletteBox.addEventListener('click', () => {
+            if(rouletteWrap.classList.contains('spun')) return; 
+            
+            const extraSpins = 5 * 360; 
+            const randomAngle = Math.floor(Math.random() * 360);
+            currentRot += extraSpins + randomAngle;
+            
+            rouletteWheel.style.transform = `rotate(${currentRot}deg)`;
+            
+            setTimeout(() => {
+                const resultIndex = Math.floor(Math.random() * ramalan.length);
+                rouletteText.textContent = ramalan[resultIndex];
+                rouletteWrap.classList.add('spun');
+            }, 3000);
+        });
+
+        // IDE B: GLOWING TIME CAPSULE
+        const capsuleBottle = document.getElementById('capsuleBottle');
+        const capsuleWrap = document.getElementById('capsuleWrap');
+        let clicks = 0;
+        
+        capsuleBottle.addEventListener('click', () => {
+            clicks++;
+            if (clicks === 1) {
+                capsuleBottle.style.transform = 'scale(1.1) rotate(-5deg)';
+            } else if (clicks === 2) {
+                capsuleBottle.style.transform = 'scale(1.15) rotate(5deg)';
+            } else if (clicks >= 3) {
+                capsuleBottle.classList.add('broken');
+                capsuleWrap.classList.add('opened');
+            }
+        });
+
+        // IDE C: POLAROID WASH
+        const polaroidOverlay = document.getElementById('polaroidOverlay');
+        let isWashing = false; let washProgress = 0;
+        
+        const handleWash = () => {
+            if(!isWashing) return;
+            washProgress += 4; 
+            polaroidOverlay.style.opacity = 1 - (washProgress / 100);
+            if(washProgress >= 100) {
+                polaroidOverlay.classList.add('washed');
+                isWashing = false;
+            }
+        };
+        
+        polaroidOverlay.addEventListener('mousedown', () => isWashing = true);
+        polaroidOverlay.addEventListener('touchstart', (e) => { isWashing = true; e.preventDefault(); }, {passive: false});
+        document.addEventListener('mousemove', handleWash);
+        document.addEventListener('touchmove', handleWash, {passive: true});
+        document.addEventListener('mouseup', () => isWashing = false);
+        document.addEventListener('touchend', () => isWashing = false);
+
+        // IDE D: GOLDEN TROPHY 3D
+        const trophyBtn = document.getElementById('trophyBtn');
+        const trophyWrap = document.getElementById('trophyWrap');
+        
+        trophyBtn.addEventListener('click', () => {
+            if(trophyWrap.classList.contains('claimed')) return;
+            trophyWrap.classList.add('claimed');
+            
+            for (let i = 0; i < 30; i++) {
+                const conf = document.createElement('div');
+                conf.className = 'confetti';
+                conf.style.left = '50%'; conf.style.top = '50%';
+                conf.style.setProperty('--drift', `${(Math.random() - 0.5) * 100}vw`);
+                conf.style.animationDelay = `${Math.random() * 0.2}s`;
+                document.body.appendChild(conf);
+                setTimeout(() => conf.remove(), 2000);
+            }
+        });
+
+        // --- SCRIPT MEMORY THEATER (ANTI-BUG) ---
+        const cinemaFrame = document.getElementById('cinemaFrame');
+        const playCinema = document.getElementById('playCinema');
+        const theaterVideo = document.getElementById('theaterVideo');
+
+        if (playCinema && theaterVideo) {
+            playCinema.addEventListener('click', () => {
+                cinemaFrame.classList.add('playing');
+                myAudio.volume = 0.2;
+                
+                theaterVideo.currentTime = 0;
+                let playPromise = theaterVideo.play();
+                
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => {
+                        console.log("Video diblokir sistem HP, memunculkan tombol manual:", error);
+                        theaterVideo.setAttribute("controls", "controls");
+                    });
+                }
+                
+                theaterVideo.onended = () => {
+                    myAudio.volume = 1.0; 
+                    cinemaFrame.classList.remove('playing'); 
+                    theaterVideo.removeAttribute("controls");
+                };
+            });
+        }
+
+        // --- SCRIPT FINAL WISH LANTERN (SKENA VERSION) ---
+        const btnFlyLantern = document.getElementById('btnFlyLantern');
+        const theLantern = document.getElementById('theLantern');
+        const wishInput = document.getElementById('wishInput');
+        const goodbyeScreen = document.getElementById('goodbyeScreen');
+
+        btnFlyLantern.addEventListener('click', () => {
+            if(wishInput.value.trim() === '') {
+                wishInput.style.borderBottomColor = 'red';
+                setTimeout(() => wishInput.style.borderBottomColor = '#0369a1', 1000);
+                return;
+            }
+
+            document.body.classList.add('mode-night');
+            document.getElementById('navBrand').style.color = 'white';
+            document.getElementById('navMenu').style.color = 'white';
+            document.getElementById('wishTitle').style.color = 'white';
+            document.getElementById('wishSub').style.color = '#94a3b8';
+            document.getElementById('stardustContainer').style.display = 'none';
+
+            theLantern.classList.add('fly');
+            wishInput.style.opacity = '0';
+            btnFlyLantern.style.opacity = '0';
+            
+            setTimeout(() => {
+                document.getElementById('wishTitle').style.opacity = '0';
+                document.getElementById('wishSub').style.opacity = '0';
+            }, 1000);
+
+            let vol = 1.0;
+            let fadeOut = setInterval(() => {
+                if (vol > 0.1) { vol -= 0.1; myAudio.volume = vol; } 
+                else { clearInterval(fadeOut); myAudio.pause(); }
+            }, 300);
+
+            setTimeout(() => { goodbyeScreen.classList.add('show'); }, 2500);
+        });
+
+    </script>
+</body>
+</html>
