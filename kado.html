@@ -495,6 +495,97 @@
         window.addEventListener('load', resumeAudio);
         myAudio.addEventListener('timeupdate', () => { localStorage.setItem('bgmTime', myAudio.currentTime); });
 
+        const pageVideos = Array.from(document.querySelectorAll('video'));
+        let audioVolumeBeforeVideo = myAudio.volume;
+        let musicReducedForVideo = false;
+        const scrollLockedVideos = new Set();
+        let touchStartY = 0;
+
+        function blockScrollUntilVideoEnds(event) {
+            if (!scrollLockedVideos.size) return;
+            if (event.type === 'wheel' && event.deltaY > 0) {
+                event.preventDefault();
+                event.stopPropagation();
+            } else if (event.type === 'touchmove' && event.touches[0].clientY < touchStartY) {
+                event.preventDefault();
+                event.stopPropagation();
+            } else if (event.type === 'keydown' && ['ArrowDown', 'PageDown', ' '].includes(event.key)) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+        }
+
+        window.addEventListener('wheel', blockScrollUntilVideoEnds, {capture: true, passive: false});
+        window.addEventListener('touchstart', event => { touchStartY = event.touches[0].clientY; }, {passive: true});
+        window.addEventListener('touchmove', blockScrollUntilVideoEnds, {capture: true, passive: false});
+        window.addEventListener('keydown', blockScrollUntilVideoEnds, true);
+
+        function restoreMusicVolume() {
+            if (!musicReducedForVideo) return;
+            myAudio.volume = audioVolumeBeforeVideo;
+            musicReducedForVideo = false;
+        }
+
+        function restoreMusicWhenVideoStops() {
+            if (!pageVideos.some(video => !video.paused && !video.ended)) restoreMusicVolume();
+        }
+
+        pageVideos.forEach(video => {
+            video.addEventListener('play', () => {
+                scrollLockedVideos.add(video);
+                video.scrollIntoView({block: 'center', behavior: 'instant'});
+                if (!musicReducedForVideo) audioVolumeBeforeVideo = myAudio.volume;
+                myAudio.volume = 0.03;
+                musicReducedForVideo = true;
+            });
+            video.addEventListener('pause', restoreMusicWhenVideoStops);
+            video.addEventListener('ended', () => {
+                scrollLockedVideos.delete(video);
+                restoreMusicWhenVideoStops();
+            });
+        });
+        window.addEventListener('wheel', restoreMusicVolume, {passive: true});
+        window.addEventListener('touchmove', restoreMusicVolume, {passive: true});
+        window.addEventListener('keydown', event => {
+            if (['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', ' '].includes(event.key)) restoreMusicVolume();
+        });
+
+        let pageTourStarted = false;
+        function startPageTour() {
+            if (pageTourStarted) return;
+            pageTourStarted = true;
+            const main = document.querySelector('main');
+            const targets = Array.from(main.children).filter(target => {
+                const style = window.getComputedStyle(target);
+                return target.getClientRects().length && target.offsetHeight > 0 &&
+                    style.visibility !== 'hidden' && style.opacity !== '0';
+            });
+            let active = true;
+            const cancelTour = () => { active = false; };
+            const cleanup = () => {
+                window.removeEventListener('pointerdown', cancelTour);
+                window.removeEventListener('keydown', cancelTour);
+                window.removeEventListener('wheel', cancelTour);
+                window.removeEventListener('touchmove', cancelTour);
+            };
+            window.addEventListener('pointerdown', cancelTour, {once: true});
+            window.addEventListener('keydown', cancelTour, {once: true});
+            window.addEventListener('wheel', cancelTour, {once: true, passive: true});
+            window.addEventListener('touchmove', cancelTour, {once: true, passive: true});
+            (async () => {
+                for (const target of targets) {
+                    if (!active) break;
+                    target.scrollIntoView({behavior: 'smooth', block: 'center'});
+                    await new Promise(resolve => setTimeout(resolve, 1400));
+                    if (target.contains(theaterVideo) && !theaterVideo.ended) {
+                        await new Promise(resolve => theaterVideo.addEventListener('ended', resolve, {once: true}));
+                    }
+                }
+                cleanup();
+            })();
+        }
+        window.addEventListener('load', () => setTimeout(startPageTour, 1500));
+
         // ==========================================
         // SCRIPT BRANKAS & BUKET MAWAR CSS
         // ==========================================
@@ -620,23 +711,28 @@
         const playCinema = document.getElementById('playCinema');
         const theaterVideo = document.getElementById('theaterVideo');
 
+        function playTheaterVideo() {
+            cinemaFrame.classList.add('playing');
+            theaterVideo.controls = true;
+            theaterVideo.play().catch(() => {
+                theaterVideo.muted = true;
+                theaterVideo.play().catch(error => console.warn("Video tidak dapat diputar:", error));
+            });
+        }
+
+        const theaterVideoObserver = new IntersectionObserver(entries => {
+            if (entries.some(entry => entry.isIntersecting)) {
+                playTheaterVideo();
+                theaterVideoObserver.disconnect();
+            }
+        }, {threshold: 0.5});
+        theaterVideoObserver.observe(theaterVideo);
+
         if (playCinema && theaterVideo) {
             playCinema.addEventListener('click', () => {
-                cinemaFrame.classList.add('playing');
-                myAudio.volume = 0.2;
-                
                 theaterVideo.currentTime = 0;
-                let playPromise = theaterVideo.play();
-                
-                if (playPromise !== undefined) {
-                    playPromise.catch(error => {
-                        console.log("Video diblokir sistem HP, memunculkan tombol manual:", error);
-                        theaterVideo.setAttribute("controls", "controls");
-                    });
-                }
-                
+                playTheaterVideo();
                 theaterVideo.onended = () => {
-                    myAudio.volume = 1.0; 
                     cinemaFrame.classList.remove('playing'); 
                     theaterVideo.removeAttribute("controls");
                 };

@@ -569,6 +569,7 @@
                         console.log("Autoplay dicegah browser.");
                         document.body.addEventListener('click', () => { myAudio.play(); }, {once:true});
                     });
+                    setTimeout(startPageTour, 400);
                 }, 1000);
             };
         } else {
@@ -577,13 +578,48 @@
                 myAudio.play().then(() => { localStorage.setItem('bgmState', 'playing'); }).catch(e => console.log(e));
                 btnOpenCurtain.classList.add('opacity-0');
                 subText.innerText = "Menuju Bagasi Memori...";
-                setTimeout(() => { cinematicScreen.style.transform = 'translateY(-100%)'; }, 800);
+                setTimeout(() => {
+                    cinematicScreen.style.transform = 'translateY(-100%)';
+                    setTimeout(startPageTour, 400);
+                }, 800);
             });
         }
 
         myAudio.addEventListener('timeupdate', () => {
             localStorage.setItem('bgmTime', myAudio.currentTime);
         });
+
+        let pageTourStarted = false;
+        function startPageTour() {
+            if (pageTourStarted) return;
+            pageTourStarted = true;
+            const main = document.querySelector('main');
+            const targets = Array.from(main.children).filter(target => {
+                const style = window.getComputedStyle(target);
+                return target.getClientRects().length && target.offsetHeight > 0 &&
+                    style.visibility !== 'hidden' && style.opacity !== '0';
+            });
+            let active = true;
+            const cancelTour = () => { active = false; };
+            const cleanup = () => {
+                window.removeEventListener('pointerdown', cancelTour);
+                window.removeEventListener('keydown', cancelTour);
+                window.removeEventListener('wheel', cancelTour);
+                window.removeEventListener('touchmove', cancelTour);
+            };
+            window.addEventListener('pointerdown', cancelTour, {once: true});
+            window.addEventListener('keydown', cancelTour, {once: true});
+            window.addEventListener('wheel', cancelTour, {once: true, passive: true});
+            window.addEventListener('touchmove', cancelTour, {once: true, passive: true});
+            (async () => {
+                for (const target of targets) {
+                    if (!active) break;
+                    target.scrollIntoView({behavior: 'smooth', block: 'center'});
+                    await new Promise(resolve => setTimeout(resolve, 1400));
+                }
+                cleanup();
+            })();
+        }
 
         // --- SCRIPT BUKA TUTUP TIMELINE LAMA ---
         const btnTimeline = document.getElementById('btnToggleTimeline');

@@ -302,6 +302,40 @@
             .home-polaroid { width: 180px; padding: 10px 10px 30px; margin-right: -40px; }
             .home-polaroid img { height: 160px; }
         }
+        .ucapan-video-stage {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            overflow: hidden;
+            border: 5px solid white;
+            border-radius: 1.25rem;
+            background: #0f172a;
+            box-shadow: 0 15px 35px rgba(3, 105, 161, 0.18);
+        }
+        .ucapan-video-stage video { width: 100%; height: 100%; object-fit: contain; }
+        .video-curtain { position: absolute; inset: 0; z-index: 5; }
+        .video-curtain-panel {
+            position: absolute; top: 0; bottom: 0; width: 52%;
+            background: repeating-linear-gradient(90deg, #fbcfe8 0, #fbcfe8 12px, #f9a8d4 20px, #fbcfe8 30px);
+            box-shadow: inset 0 0 30px rgba(131, 24, 67, 0.2);
+            transition: transform 1s cubic-bezier(0.7, 0, 0.2, 1);
+        }
+        .video-curtain-panel.left { left: 0; border-right: 3px solid rgba(255,255,255,0.8); }
+        .video-curtain-panel.right { right: 0; border-left: 3px solid rgba(255,255,255,0.8); }
+        .video-curtain.open .video-curtain-panel.left { transform: translateX(-105%); }
+        .video-curtain.open .video-curtain-panel.right { transform: translateX(105%); }
+        .video-curtain-button {
+            position: absolute; inset: 0; z-index: 1; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 0.6rem; width: 100%;
+            padding: 1rem; color: #075985; text-align: center;
+            font: 900 0.7rem 'Plus Jakarta Sans', sans-serif; letter-spacing: 0.15em;
+            text-transform: uppercase; cursor: pointer;
+        }
+        .video-curtain.open .video-curtain-button { opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
+        @media (max-width: 480px) {
+            .video-curtain-panel { background-size: 24px 100%; }
+            .video-curtain-button { font-size: 0.58rem; letter-spacing: 0.1em; }
+        }
 
         /* --- TREN SCROLL REVEAL --- */
         .reveal-text {
@@ -443,6 +477,23 @@
                 </div>
                 <p class="text-center text-[8px] md:text-[9px] text-slate-400 font-bold uppercase tracking-widest mt-3 animate-pulse">Sentuh foto untuk melihat lebih jelas</p>
             </div>
+            <section id="ucapanVideoSection" class="w-full max-w-xl px-4 sm:px-0 mt-2 mb-10">
+                <h3 class="font-sans-clean text-[10px] md:text-xs font-black text-royal-blue tracking-[0.3em] uppercase text-center mb-4">Ucapan dari Yola</h3>
+                <div class="ucapan-video-stage">
+                    <video id="ucapanVideo" playsinline preload="metadata" aria-label="Video ucapan dari Yola">
+                        <source src="ucapan-yola.mp4" type="video/mp4">
+                        Browser kamu tidak mendukung pemutaran video.
+                    </video>
+                    <div id="ucapanVideoCurtain" class="video-curtain">
+                        <div class="video-curtain-panel left"></div>
+                        <div class="video-curtain-panel right"></div>
+                        <button id="btnOpenUcapanVideo" class="video-curtain-button" type="button" aria-label="Buka tirai dan putar video ucapan">
+                            <span class="material-symbols-outlined text-4xl">play_circle</span>
+                            <span>Ketuk untuk membuka tirai</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
         </div>
 
         <button id="btnTogglePrasasti" class="btn-crystal-orb mt-6 mb-4">
@@ -763,10 +814,83 @@
             }, 800);
         });
 
-        setTimeout(() => btnOpenCurtain.click(), 600);
-
         myAudio.addEventListener('timeupdate', () => {
             localStorage.setItem('bgmTime', myAudio.currentTime);
+        });
+
+        const ucapanVideo = document.getElementById('ucapanVideo');
+        const ucapanVideoCurtain = document.getElementById('ucapanVideoCurtain');
+        const btnOpenUcapanVideo = document.getElementById('btnOpenUcapanVideo');
+        function playUcapanVideo() {
+            ucapanVideoCurtain.classList.add('open');
+            ucapanVideo.controls = true;
+            ucapanVideo.play().catch(() => {
+                ucapanVideo.muted = true;
+                ucapanVideo.play().catch(error => console.warn('Video ucapan tidak dapat diputar:', error));
+            });
+        }
+        btnOpenUcapanVideo.addEventListener('click', playUcapanVideo);
+        const ucapanVideoObserver = new IntersectionObserver(entries => {
+            if (entries.some(entry => entry.isIntersecting)) {
+                playUcapanVideo();
+                ucapanVideoObserver.disconnect();
+            }
+        }, {threshold: 0.5});
+        ucapanVideoObserver.observe(ucapanVideo);
+
+        const pageVideos = Array.from(document.querySelectorAll('video'));
+        let audioVolumeBeforeVideo = myAudio.volume;
+        let musicReducedForVideo = false;
+        const scrollLockedVideos = new Set();
+        let touchStartY = 0;
+
+        function blockScrollUntilVideoEnds(event) {
+            if (!scrollLockedVideos.size) return;
+            if (event.type === 'wheel' && event.deltaY > 0) {
+                event.preventDefault();
+                event.stopPropagation();
+            } else if (event.type === 'touchmove' && event.touches[0].clientY < touchStartY) {
+                event.preventDefault();
+                event.stopPropagation();
+            } else if (event.type === 'keydown' && ['ArrowDown', 'PageDown', ' '].includes(event.key)) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+        }
+
+        window.addEventListener('wheel', blockScrollUntilVideoEnds, {capture: true, passive: false});
+        window.addEventListener('touchstart', event => { touchStartY = event.touches[0].clientY; }, {passive: true});
+        window.addEventListener('touchmove', blockScrollUntilVideoEnds, {capture: true, passive: false});
+        window.addEventListener('keydown', blockScrollUntilVideoEnds, true);
+
+        function restoreMusicVolume() {
+            if (!musicReducedForVideo) return;
+            myAudio.volume = audioVolumeBeforeVideo;
+            musicReducedForVideo = false;
+        }
+
+        function restoreMusicWhenVideoStops() {
+            if (!pageVideos.some(video => !video.paused && !video.ended)) restoreMusicVolume();
+        }
+
+        pageVideos.forEach(video => {
+            video.addEventListener('play', () => {
+                scrollLockedVideos.add(video);
+                video.scrollIntoView({block: 'center', behavior: 'instant'});
+                if (!musicReducedForVideo) audioVolumeBeforeVideo = myAudio.volume;
+                myAudio.volume = 0.03;
+                musicReducedForVideo = true;
+            });
+            video.addEventListener('pause', restoreMusicWhenVideoStops);
+            video.addEventListener('ended', () => {
+                scrollLockedVideos.delete(video);
+                restoreMusicWhenVideoStops();
+            });
+        });
+        window.addEventListener('wheel', restoreMusicVolume, {passive: true});
+        window.addEventListener('touchmove', restoreMusicVolume, {passive: true});
+        window.addEventListener('keydown', event => {
+            if (['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', ' '].includes(event.key)) restoreMusicVolume();
         });
 
         // --- 3. FUNGSI UNTUK MENGATUR TOMBOL TOGGLE YANG TERSISA ---
@@ -841,6 +965,7 @@
                 {target: '.masterpiece-frame'},
                 {target: 'homeFilmStrip'},
                 {target: 'homePolaroidStrip'},
+                {target: 'ucapanVideoSection'},
                 {target: 'sectionPrasasti', button: 'btnTogglePrasasti'},
                 {target: 'sectionBento', button: 'btnToggleBento'},
                 {target: 'sectionHall'},
@@ -870,6 +995,9 @@
                 if (!autoTourActive) return;
                 if (!await scrollToTourTarget(target)) return;
                 await waitForTour(1400);
+                if (step.target === 'ucapanVideoSection' && !ucapanVideo.ended) {
+                    await new Promise(resolve => ucapanVideo.addEventListener('ended', resolve, {once: true}));
+                }
             }
 
             if (!autoTourActive) return;
